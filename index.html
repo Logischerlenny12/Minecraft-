@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Realm Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1f2329; --panel:#2a2f37; --panel2:#323843; --line:#434b58; --ink:#ece7da; --mute:#a2a9b5;
+  --red:#d6452a; --gold:#e8b94a; --green:#4cae78; --blue:#6f8cf0;
+  --head:'Chakra Petch',system-ui,sans-serif; --body:system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3{font-family:var(--head);margin:0 0 .6rem;font-weight:700}
+h3{font-size:1.05rem}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.55rem .65rem;width:100%}
+textarea{min-height:90px;resize:vertical}
+button{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:.5rem .8rem;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:600}
+button.danger{border-color:var(--red);color:#ff9a86}
+button.sm{padding:.25rem .5rem;font-size:.82rem}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+label{display:block;color:var(--mute);font-size:.85rem;margin:.6rem 0 .25rem}
+
+#app{display:grid;grid-template-columns:200px 1fr;grid-template-rows:auto 1fr;min-height:100%}
+header{grid-column:1/-1;display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:.7rem 1rem;border-bottom:1px solid var(--line);background:var(--panel)}
+.brand{font-family:var(--head);font-weight:700;font-size:1.15rem}
+.timer{font-family:var(--head);color:var(--gold)}
+.timer small{color:var(--mute);font-family:var(--body);margin-right:.4rem}
+nav{border-right:1px solid var(--line);padding:.6rem;display:flex;flex-direction:column;gap:.25rem;background:var(--panel)}
+nav button{text-align:left;border-color:transparent;background:transparent}
+nav button.on{background:var(--bg);border-color:var(--line);color:var(--gold)}
+nav .sep{height:1px;background:var(--line);margin:.5rem 0}
+main{padding:1rem;max-width:1100px;width:100%}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1rem;margin-bottom:1rem}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.coins{font:700 3rem/1 var(--head);color:var(--gold)}
+.lbl{color:var(--mute);font-size:.85rem}
+.stats{display:flex;gap:1.6rem;margin:0}
+.stats dt{color:var(--mute);font-size:.8rem}.stats dd{margin:0;font:700 1.4rem var(--head)}
+.hero{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-end}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--mute);font-weight:500;font-size:.82rem}
+.pos{color:var(--green)}.neg{color:#ff8a73}
+.tag{display:inline-block;padding:0 .45rem;border-radius:3px;font-size:.78rem;border:1px solid var(--line)}
+.tag.red{border-color:var(--red);color:#ff9a86}.tag.gold{border-color:var(--gold);color:var(--gold)}.tag.green{border-color:var(--green);color:var(--green)}
+.row{display:flex;gap:.4rem;flex-wrap:wrap}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.8rem}
+.item{border:1px solid var(--line);border-radius:6px;padding:.8rem;background:var(--panel2);display:flex;flex-direction:column;gap:.4rem}
+.item b{font-family:var(--head)}
+.bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin:.2rem 0 .6rem}
+.bar i{display:block;height:100%;background:var(--blue)}
+/* Inventar */
+.inv{display:flex;gap:1rem;flex-wrap:wrap}
+.grid9{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:3px;flex:1;min-width:300px}
+.slot{aspect-ratio:1;background:var(--bg);border:2px solid var(--line);border-radius:3px;padding:2px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;font-size:.62rem;line-height:1.1;overflow:hidden;word-break:break-word;min-height:44px}
+.slot.full{border-color:#6a7385;background:var(--panel2)}
+.slot em{font-style:normal;align-self:flex-end;font-weight:700;font-size:.72rem;color:var(--gold)}
+.gap{height:8px}
+.armor{display:grid;gap:3px;grid-template-columns:54px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom));display:grid;gap:.4rem;z-index:9}
+#toast div{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--blue);padding:.6rem .9rem;border-radius:4px;max-width:90vw}
+#toast .ok{border-left-color:var(--green)}#toast .err{border-left-color:var(--red)}
+.login{max-width:420px;margin:12vh auto;padding:1rem}
+.empty{color:var(--mute);padding:.5rem 0}
+.scroll{overflow-x:auto}
+@media (max-width:760px){
+  #app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+  nav{order:3;flex-direction:row;overflow-x:auto;border-right:0;border-top:1px solid var(--line);position:sticky;bottom:0;padding-bottom:calc(.6rem + env(safe-area-inset-bottom))}
+  nav .sep{display:none}nav button{white-space:nowrap}
+  .coins{font-size:2.3rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="toast" aria-live="polite"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, doc, collection, onSnapshot, addDoc, setDoc, updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, Timestamp }
+  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+/* ========================= Firebase ========================= */
+const app = initializeApp({
+  apiKey: "AIzaSyAkOOgBdY5vrYlxNZq4F0YctNANTrbXdwQ",
+  authDomain: "minecraft-virtuell.firebaseapp.com",
+  projectId: "minecraft-virtuell",
+  storageBucket: "minecraft-virtuell.firebasestorage.app",
+  messagingSenderId: "931259543545",
+  appId: "1:931259543545:web:5c4ef885305d8df7501728",
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ========================= State ========================= */
+const S = { uid: null, me: null, view: "wallet", user: null, users: [], tx: [], teams: [], shop: [], bans: [], bounties: [],
+            state: null, vote: null, ballots: [], live: [], reports: [], inv: null, invData: null, loginMsg: "" };
+let unsubs = [], invUnsub = null, invTimer = null, dirty = false;
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (n) => Number(n ?? 0).toLocaleString("de-DE");
+const rank = () => ({ player: 1, mod: 2, admin: 3 }[S.me?.role] ?? 0);
+const isStaff = () => rank() >= 2, isAdmin = () => rank() >= 3;
+const pretty = (id) => id.replace(/_/g, " ");
+const date = (t) => (t?.toDate ? t.toDate().toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" }) : "–");
+
+function toast(msg, kind = "") {
+  const d = document.createElement("div");
+  d.className = kind; d.textContent = msg;
+  $("#toast").append(d); setTimeout(() => d.remove(), 4500);
+}
+
+/* ========================= Aktionen → command_queue ========================= */
+async function send(type, payload = {}) {
+  try {
+    const ref = await addDoc(collection(db, "command_queue"), { type, payload, uid: S.uid, by: S.me.gamertag, status: "pending", createdAt: serverTimestamp() });
+    const un = onSnapshot(ref, (d) => {
+      const s = d.data();
+      if (s?.status === "done") { toast(s.result || "Erledigt", "ok"); un(); }
+      if (s?.status === "error") { toast(s.result || "Fehler", "err"); un(); }
+    });
+    setTimeout(() => un(), 30000);
+  } catch (e) { toast("Senden fehlgeschlagen: " + e.message, "err"); }
+}
+
+/* ========================= Auth / Login ========================= */
+onAuthStateChanged(auth, (u) => {
+  if (!u) return signInAnonymously(auth).catch((e) => { S.loginMsg = e.message; render(true); });
+  S.uid = u.uid;
+  onSnapshot(doc(db, "uid_map", u.uid), (d) => {
+    if (d.exists()) {
+      const first = !S.me || S.me.gamertag !== d.data().gamertag;
+      S.me = d.data();
+      if (first) startListeners();
+      render(true);
+    } else { S.me = null; stopListeners(); render(true); }
+  }, () => render(true));
+});
+
+function stopListeners() { unsubs.forEach((u) => u()); unsubs = []; }
+function startListeners() {
+  stopListeners();
+  const g = S.me.gamertag, on = (ref, fn) => unsubs.push(onSnapshot(ref, fn, (e) => console.warn(e.code)));
+  const list = (snap) => snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  on(doc(db, "users", g), (d) => { S.user = d.data(); render(); });
+  on(collection(db, "users"), (s) => { S.users = list(s); render(); });
+  on(query(collection(db, "users", g, "transactions"), orderBy("ts", "desc"), limit(40)), (s) => { S.tx = list(s); render(); });
+  on(collection(db, "teams"), (s) => { S.teams = list(s); render(); });
+  on(collection(db, "shop_items"), (s) => { S.shop = list(s); render(); });
+  on(query(collection(db, "bans"), where("active", "==", true)), (s) => { S.bans = list(s); render(); });
+  on(query(collection(db, "bounties"), where("active", "==", true)), (s) => { S.bounties = list(s); render(); });
+  on(doc(db, "events", "state"), (d) => { S.state = d.data(); render(); });
+  on(doc(db, "events", "vote"), (d) => { S.vote = d.data(); render(); });
+  on(collection(db, "events", "vote", "ballots"), (s) => { S.ballots = list(s); render(); });
+  if (isStaff()) {
+    on(doc(db, "live", "state"), (d) => { S.live = d.data()?.players ?? []; render(); });
+    on(query(collection(db, "reports"), orderBy("createdAt", "desc"), limit(40)), (s) => { S.reports = list(s); render(); });
+  }
+}
+
+/* ========================= Views ========================= */
+const NAV = [
+  ["wallet", "Wallet"], ["team", "Team-Tresor"], ["bounty", "Kopfgelder"], ["shop", "Shop"],
+  ["vote", "Abstimmung"], ["report", "Melden"], ["punish", "Strafen"],
+  null,
+  ["players", "Spieler", 2], ["inventory", "Inventar", 2], ["reports", "Meldungen", 2], ["tools", "Event-Tools", 3],
+];
+
+const V = {
+  wallet() {
+    const u = S.user ?? {}, others = S.users.filter((x) => x.gamertag !== S.me.gamertag).sort((a, b) => a.gamertag.localeCompare(b.gamertag));
+    const kd = u.deaths ? (u.kills / u.deaths).toFixed(2) : (u.kills ?? 0);
+    return `<section class="card hero">
+        <div><div class="lbl">Kontostand</div><div class="coins">${fmt(u.balance)}</div></div>
+        <dl class="stats"><div><dt>Kills</dt><dd>${fmt(u.kills)}</dd></div><div><dt>Tode</dt><dd>${fmt(u.deaths)}</dd></div><div><dt>K/D</dt><dd>${kd}</dd></div></dl>
+      </section>
+      <div class="cols">
+        <form class="card" data-form="transfer"><h3>Coins senden</h3>
+          <label for="to">Empfänger</label><select id="to" name="to" required>${others.map((x) => `<option>${esc(x.gamertag)}</option>`).join("")}</select>
+          <label for="am">Betrag</label><input id="am" name="amount" type="number" min="1" required>
+          <p><button class="primary">Coins senden</button></p></form>
+        <div class="card"><h3>Verlauf</h3>${S.tx.length ? `<div class="scroll"><table><tbody>${S.tx.map((t) =>
+          `<tr><td class="${t.amount >= 0 ? "pos" : "neg"}">${t.amount >= 0 ? "+" : ""}${fmt(t.amount)}</td><td>${esc(t.reason)}</td><td class="lbl">${date(t.ts)}</td></tr>`).join("")}</tbody></table></div>`
+          : `<p class="empty">Noch keine Buchungen.</p>`}</div>
+      </div>`;
+  },
+  team() {
+    const t = S.teams.find((x) => x.id === S.user?.teamId);
+    if (!t) return `<div class="card"><h3>Team-Tresor</h3><p class="empty">Du bist keinem Team zugeordnet. Ein Admin legt Teams an.</p></div>`;
+    return `<section class="card hero"><div><div class="lbl">${esc(t.name)} · ${t.members.map(esc).join(" & ")}</div><div class="coins">${fmt(t.vault)}</div></div></section>
+      <form class="card" data-form="teamVault" style="max-width:420px"><h3>Tresor</h3>
+        <label for="ta">Betrag</label><input id="ta" name="amount" type="number" min="1" required>
+        <p class="row"><button class="primary" name="direction" value="in">Einzahlen</button><button name="direction" value="out">Entnehmen</button></p></form>`;
+  },
+  bounty() {
+    const targets = S.users.filter((x) => x.gamertag !== S.me.gamertag && (!S.user?.teamId || x.teamId !== S.user.teamId));
+    const sum = {}; S.bounties.forEach((b) => (sum[b.target] = (sum[b.target] ?? 0) + b.amount));
+    const top = Object.entries(sum).sort((a, b) => b[1] - a[1]);
+    return `<div class="cols"><form class="card" data-form="bounty"><h3>Kopfgeld aussetzen</h3>
+        <label for="bt">Ziel</label><select id="bt" name="target" required>${targets.map((x) => `<option>${esc(x.gamertag)}</option>`).join("")}</select>
+        <label for="ba">Betrag</label><input id="ba" name="amount" type="number" min="1" required>
+        <p><button class="primary">Kopfgeld setzen</button></p></form>
+      <div class="card"><h3>Aktive Kopfgelder</h3>${top.length ? `<table><tbody>${top.map(([n, a]) => `<tr><td>${esc(n)}</td><td class="pos">${fmt(a)} Coins</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Aktuell ist niemand ausgeschrieben.</p>`}</div></div>`;
+  },
+  shop() {
+    const items = S.shop.filter((i) => i.active).sort((a, b) => a.price - b.price);
+    return `<div class="card"><h3>Shop</h3><p class="lbl">Du musst für den Kauf im Spiel online sein. Guthaben: <b>${fmt(S.user?.balance)}</b></p>
+      ${items.length ? `<div class="shop">${items.map((i) => `<div class="item"><b>${esc(i.icon ?? "")} ${esc(i.name)}</b><span class="lbl">${esc(i.category ?? "")}</span>
+        <span class="coins" style="font-size:1.4rem">${fmt(i.price)}</span><button class="primary" data-act="buy" data-id="${esc(i.id)}">Kaufen</button></div>`).join("")}</div>` : `<p class="empty">Der Shop ist noch leer.</p>`}</div>`;
+  },
+  vote() {
+    const v = S.vote;
+    if (!v?.open) return `<div class="card"><h3>Minigame-Abstimmung</h3><p class="empty">Gerade läuft keine Abstimmung.</p></div>`;
+    const cur = S.ballots.filter((b) => b.round === v.round), total = cur.length || 0, mine = cur.find((b) => b.id === S.uid)?.option;
+    return `<div class="card"><h3>Welches Minigame als Nächstes?</h3>${Object.entries(v.options).map(([id, label]) => {
+      const n = cur.filter((b) => b.option === id).length, pct = total ? Math.round((n / total) * 100) : 0;
+      return `<div><div class="row" style="justify-content:space-between"><span>${esc(label)}${mine === id ? ' <span class="tag green">Deine Stimme</span>' : ""}</span><b>${pct} %</b></div>
+        <div class="bar"><i style="width:${pct}%"></i></div><button class="sm" data-act="vote" data-id="${esc(id)}">Dafür stimmen</button></div><div class="gap"></div>`;
+    }).join("")}<p class="lbl">${total} Stimmen</p></div>`;
+  },
+  report() {
+    return `<form class="card" data-form="report" style="max-width:520px"><h3>Spieler melden</h3>
+      <label for="rt">Spieler</label><select id="rt" name="target" required>${S.users.filter((x) => x.gamertag !== S.me.gamertag).map((x) => `<option>${esc(x.gamertag)}</option>`).join("")}</select>
+      <label for="rr">Grund</label><select id="rr" name="reason"><option>Cheating / Hacks</option><option>Beleidigung</option><option>Griefing</option><option>Teaming / Regelbruch</option><option>Sonstiges</option></select>
+      <label for="rx">Beschreibung</label><textarea id="rx" name="text" maxlength="500" required></textarea>
+      <p><button class="primary">Meldung abschicken</button></p></form>`;
+  },
+  punish() {
+    const rows = [...S.bans].sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
+    const cls = { warn: "gold", jail: "red", ban: "red" }, lbl = { warn: "Verwarnung", jail: "Knast", ban: "Bann" };
+    return `<div class="card"><h3>Aktive Strafen</h3>${rows.length ? `<div class="scroll"><table><thead><tr><th>Spieler</th><th>Art</th><th>Grund</th><th>Seit</th></tr></thead><tbody>${rows.map((b) =>
+      `<tr><td>${esc(b.gamertag)}</td><td><span class="tag ${cls[b.type]}">${lbl[b.type]}</span></td><td>${esc(b.reason)}</td><td class="lbl">${date(b.createdAt)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Keine aktiven Strafen.</p>`}</div>`;
+  },
+
+  /* ---------- Staff ---------- */
+  players() {
+    const meta = Object.fromEntries(S.users.map((u) => [u.gamertag, u]));
+    return `<div class="card"><h3>Live-Spieler (${S.live.length})</h3>${S.live.length ? `<div class="scroll"><table><thead><tr><th>Spieler</th><th>Status</th><th>Modus</th><th>Team</th><th>Position</th><th>Aktionen</th></tr></thead><tbody>${S.live.map((p) => {
+      const n = esc(p.p), u = meta[p.p] ?? {};
+      return `<tr><td><b>${n}</b> <span class="lbl">${p.hp ?? "?"} ♥</span></td>
+        <td>${p.frozen ? '<span class="tag gold">eingefroren</span> ' : ""}${p.jailed ? '<span class="tag red">Knast</span>' : ""}${!p.frozen && !p.jailed ? '<span class="tag green">online</span>' : ""}</td>
+        <td>${esc(p.gm)}</td><td>${esc(p.team ?? "–")}</td><td class="lbl">${p.x} ${p.y} ${p.z} (${esc(p.d)})</td>
+        <td><div class="row">
+          <button class="sm" data-act="${p.frozen ? "unfreeze" : "freeze"}" data-n="${n}">${p.frozen ? "Auftauen" : "Freeze"}</button>
+          <button class="sm" data-act="${p.jailed ? "unjail" : "jail"}" data-n="${n}">${p.jailed ? "Freilassen" : "Knast"}</button>
+          <button class="sm" data-act="spectate" data-n="${n}">Ghost</button>
+          <button class="sm" data-act="warn" data-n="${n}">Warnen</button>
+          <button class="sm" data-act="kick" data-n="${n}">Kick</button>
+          <button class="sm danger" data-act="ban" data-n="${n}">Bann</button>
+          <button class="sm" data-act="inspect" data-n="${n}">Inventar</button></div></td></tr>`;
+    }).join("")}</tbody></table></div>` : `<p class="empty">Keine Spieler online (oder der Bot ist offline).</p>`}
+      <p class="row"><button class="sm" data-act="unspectate">Wieder sichtbar werden</button></p></div>`;
+  },
+  inventory() {
+    const names = S.live.map((p) => p.p), d = S.invData;
+    const cell = (s, i) => s ? `<button class="slot full" ${isAdmin() ? `data-act="clearItem" data-item="minecraft:${esc(s.id)}"` : "disabled"} title="${esc(pretty(s.id))}${isAdmin() ? " – klicken zum Entfernen" : ""}">${esc(s.name || pretty(s.id))}<em>${s.n > 1 ? s.n : ""}</em></button>` : `<div class="slot"></div>`;
+    const grid = (a) => `<div class="grid9">${a.map(cell).join("")}</div>`;
+    return `<div class="card"><h3>Inventar-Inspektor</h3>
+      <div class="row"><select id="invSel" style="max-width:260px">${names.map((n) => `<option ${n === S.inv ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>
+      <button data-act="invLoad">Laden</button></div></div>
+      ${S.inv && d ? `<div class="card"><h3>${esc(S.inv)}</h3><div class="inv">
+        <div><div class="lbl">Rüstung</div><div class="armor">${d.armor.map(cell).join("")}</div><div class="lbl" style="margin-top:.5rem">Offhand</div><div class="armor">${cell(d.off)}</div></div>
+        <div style="flex:1;min-width:300px">${grid(d.main.slice(9))}<div class="gap"></div>${grid(d.main.slice(0, 9))}</div></div>
+        <p class="lbl">Aktualisiert: ${date(d.updatedAt)} · wird live nachgeführt, solange diese Ansicht offen ist.</p></div>` : `<p class="empty">Spieler wählen und „Laden“ klicken.</p>`}`;
+  },
+  reports() {
+    return `<div class="card"><h3>Meldungen</h3>${S.reports.length ? `<div class="scroll"><table><thead><tr><th>Von</th><th>Gegen</th><th>Grund</th><th>Text</th><th></th></tr></thead><tbody>${S.reports.map((r) =>
+      `<tr><td>${esc(r.reporter)}</td><td>${esc(r.target)}</td><td>${esc(r.reason)}</td><td>${esc(r.text)}</td><td>${r.status === "open" ? `<button class="sm" data-act="reportDone" data-id="${esc(r.id)}">Erledigt</button>` : '<span class="tag green">erledigt</span>'}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Keine Meldungen.</p>`}</div>`;
+  },
+  tools() {
+    const ph = S.state;
+    const opts = ["protection:Schutzphase", "pvp:PVP", "minigame:Minigame"].map((x) => x.split(":")).map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
+    return `<div class="cols">
+      <form class="card" data-form="broadcast"><h3>Broadcast</h3><label for="bti">Titel</label><input id="bti" name="title" maxlength="60" required>
+        <label for="bsu">Untertitel</label><input id="bsu" name="subtitle" maxlength="80"><p class="row"><button class="primary">An alle senden</button><button type="button" data-act="airdrop">Mystery-Drop</button></p></form>
+      <form class="card" data-form="phase"><h3>Phase ${ph ? `· aktuell: ${esc(ph.label)}` : ""}</h3><label for="pp">Starten</label><select id="pp" name="phase">${opts}</select>
+        <label for="pd">Dauer in Minuten (0 = unbegrenzt)</label><input id="pd" name="min" type="number" min="0" value="10">
+        <label for="pn">Danach automatisch</label><select id="pn" name="next"><option value="">– nichts –</option>${opts}</select><p><button class="primary">Phase setzen</button></p></form>
+      <form class="card" data-form="voteStart"><h3>Abstimmung starten</h3><label for="vo">Optionen (kommagetrennt)</label><input id="vo" name="opts" placeholder="Spleef, Parkour, Bingo" required>
+        <p class="row"><button class="primary">Neue Abstimmung</button><button type="button" data-act="voteClose">Beenden</button></p></form>
+      <form class="card" data-form="teamCreate"><h3>Team anlegen</h3><label for="tn">Teamname</label><input id="tn" name="name" required>
+        <label for="ta1">Spieler A</label><input id="ta1" name="a" required><label for="ta2">Spieler B</label><input id="ta2" name="b" required><p><button class="primary">Team erstellen</button></p></form>
+      <form class="card" data-form="shopItem"><h3>Shop-Artikel</h3><label for="sn">Name</label><input id="sn" name="name" required>
+        <label for="sp">Preis</label><input id="sp" name="price" type="number" min="1" required><label for="sc">Kategorie</label><input id="sc" name="category" placeholder="Items / Tränke / Effekte">
+        <label for="scm">Befehle (einer pro Zeile, {player} wird ersetzt)</label><textarea id="scm" name="commands" placeholder="/give {player} golden_apple 2" required></textarea><p><button class="primary">Artikel speichern</button></p>
+        ${S.shop.length ? `<div class="row">${S.shop.map((i) => `<button type="button" class="sm danger" data-act="shopDel" data-id="${esc(i.id)}">${esc(i.name)} löschen</button>`).join("")}</div>` : ""}</form>
+      <form class="card" data-form="admin"><h3>Admin</h3><label for="at">Spieler</label><input id="at" name="target" required>
+        <label for="ar">Rolle</label><select id="ar" name="role"><option>player</option><option>mod</option><option>admin</option></select>
+        <p class="row"><button class="primary" name="op" value="role">Rolle setzen</button><button name="op" value="unban">Entbannen</button><button type="button" data-act="buildJail">Knast-Box bauen</button></p></form>
+    </div>`;
+  },
+};
+
+/* ========================= Render ========================= */
+function render(force) {
+  const ae = document.activeElement;
+  if (!force && ae && ["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName)) { dirty = true; return; }
+  dirty = false;
+  if (!S.me) return renderLogin();
+  const nav = NAV.map((n) => (!n ? '<div class="sep"></div>' : rank() >= (n[2] ?? 1) ? `<button data-act="nav" data-v="${n[0]}" class="${S.view === n[0] ? "on" : ""}">${n[1]}</button>` : "")).join("");
+  const view = (V[S.view] && rank() >= (NAV.find((n) => n && n[0] === S.view)?.[2] ?? 1)) ? V[S.view]() : V.wallet();
+  $("#root").innerHTML = `<div id="app"><header><span class="brand">Realm Control</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${view}</main></div>`;
+  tick();
+}
+function renderLogin() {
+  $("#root").innerHTML = `<form class="login card" data-form="login"><h1>Realm Control</h1>
+    <p class="lbl">1. Tippe im Spiel-Chat <b>!link</b>. 2. Gib hier Gamertag und den 6-stelligen Code ein, den du im Chat erhältst.</p>
+    <label for="gt">Gamertag</label><input id="gt" name="gamertag" autocomplete="username" required>
+    <label for="cd">Code</label><input id="cd" name="code" inputmode="numeric" maxlength="6" required>
+    <p><button class="primary">Anmelden</button></p><p class="lbl" id="loginMsg">${esc(S.loginMsg)}</p></form>`;
+}
+document.addEventListener("focusout", () => { if (dirty) setTimeout(() => render(), 80); });
+
+function tick() {
+  const el = $("#timer"); if (!el) return;
+  const s = S.state;
+  if (!s) { el.textContent = ""; return; }
+  const left = s.endsAt?.toMillis ? Math.max(0, Math.round((s.endsAt.toMillis() - Date.now()) / 1000)) : null;
+  el.innerHTML = `<small>${esc(s.label ?? "")}</small>${left === null ? "" : String(Math.floor(left / 60)).padStart(2, "0") + ":" + String(left % 60).padStart(2, "0")}`;
+}
+setInterval(tick, 1000);
+
+/* ========================= Inventar-Live ========================= */
+function openInventory(name) {
+  S.inv = name; S.invData = null;
+  invUnsub?.(); clearInterval(invTimer);
+  invUnsub = onSnapshot(doc(db, "inventories", name), (d) => { S.invData = d.data() ?? null; render(true); });
+  send("watch", { target: name });
+  invTimer = setInterval(() => { if (S.view === "inventory" && S.inv) send("watch", { target: S.inv }); }, 90000);
+}
+
+/* ========================= Klick-Handler ========================= */
+const askReason = (t) => prompt(t)?.trim();
+const ACT = {
+  nav: (b) => { S.view = b.dataset.v; render(true); },
+  buy: (b) => send("buy", { itemId: b.dataset.id }),
+  vote: (b) => setDoc(doc(db, "events", "vote", "ballots", S.uid), { option: b.dataset.id, round: S.vote.round }).then(() => toast("Stimme gespeichert", "ok")),
+  freeze: (b) => send("freeze", { target: b.dataset.n }),
+  unfreeze: (b) => send("unfreeze", { target: b.dataset.n }),
+  jail: (b) => { const r = askReason("Grund für den Knast:"); if (r) send("jail", { target: b.dataset.n, reason: r }); },
+  unjail: (b) => send("unjail", { target: b.dataset.n }),
+  spectate: (b) => send("spectate", { target: b.dataset.n }),
+  unspectate: () => send("unspectate"),
+  warn: (b) => { const r = askReason("Grund der Verwarnung:"); if (r) send("warn", { target: b.dataset.n, reason: r }); },
+  kick: (b) => { const r = askReason("Grund (optional):"); if (r !== undefined) send("kick", { target: b.dataset.n, reason: r }); },
+  ban: (b) => { const r = askReason("Grund des Banns:"); if (!r) return; const h = prompt("Dauer in Stunden (leer = dauerhaft):"); send("ban", { target: b.dataset.n, reason: r, hours: Number(h) || 0 }); },
+  inspect: (b) => { S.view = "inventory"; openInventory(b.dataset.n); send("inspect", { target: b.dataset.n }); render(true); },
+  invLoad: () => { const n = $("#invSel")?.value; if (n) { openInventory(n); send("inspect", { target: n }); } },
+  clearItem: (b) => { if (confirm(`„${pretty(b.dataset.item)}“ bei ${S.inv} komplett entfernen?`)) send("clear", { target: S.inv, itemId: b.dataset.item }); },
+  reportDone: (b) => updateDoc(doc(db, "reports", b.dataset.id), { status: "done" }),
+  airdrop: () => send("airdrop"),
+  buildJail: () => confirm("Barriere-Box am Knast-Punkt bauen?") && send("buildJail"),
+  shopDel: (b) => confirm("Artikel löschen?") && deleteDoc(doc(db, "shop_items", b.dataset.id)),
+  voteClose: () => updateDoc(doc(db, "events", "vote"), { open: false }),
+};
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-act]");
+  if (b && ACT[b.dataset.act]) { e.preventDefault(); ACT[b.dataset.act](b); }
+});
+
+/* ========================= Formulare ========================= */
+const FORM = {
+  async login(f) {
+    const gamertag = f.gamertag.value.trim(), code = f.code.value.trim();
+    S.loginMsg = "Code wird geprüft …"; $("#loginMsg").textContent = S.loginMsg;
+    await setDoc(doc(db, "link_attempts", S.uid), { gamertag, code });
+    setTimeout(() => { if (!S.me) { S.loginMsg = "Das hat nicht geklappt. Prüfe Gamertag und Code oder tippe im Spiel erneut !link."; renderLogin(); } }, 12000);
+  },
+  transfer: (f) => send("transfer", { to: f.to.value, amount: +f.amount.value }),
+  teamVault: (f, ev) => send("teamVault", { direction: ev.submitter?.value || "in", amount: +f.amount.value }),
+  bounty: (f) => send("bounty", { target: f.target.value, amount: +f.amount.value }),
+  async report(f) {
+    await addDoc(collection(db, "reports"), { reporter: S.me.gamertag, target: f.target.value, reason: f.reason.value, text: f.text.value.trim(), status: "open", createdAt: serverTimestamp() });
+    toast("Meldung gesendet. Danke dir!", "ok");
+  },
+  broadcast: (f) => send("broadcast", { title: f.title.value, subtitle: f.subtitle.value }),
+  phase: (f) => send("phase", { phase: f.phase.value, durationSec: (+f.min.value || 0) * 60, next: f.next.value || null }),
+  async voteStart(f) {
+    const options = Object.fromEntries(f.opts.value.split(",").map((s) => s.trim()).filter(Boolean).map((l) => [l.toLowerCase().replace(/[^a-z0-9]+/g, "-"), l]));
+    await setDoc(doc(db, "events", "vote"), { open: true, round: (S.vote?.round ?? 0) + 1, options });
+    toast("Abstimmung gestartet", "ok");
+  },
+  teamCreate: (f) => send("teamCreate", { name: f.name.value, a: f.a.value, b: f.b.value }),
+  async shopItem(f) {
+    const commands = f.commands.value.split("\n").map((s) => s.trim()).filter(Boolean);
+    const id = f.name.value.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    await setDoc(doc(db, "shop_items", id), { name: f.name.value.trim(), price: +f.price.value, category: f.category.value.trim(), commands, active: true });
+    toast("Artikel gespeichert", "ok");
+  },
+  admin: (f, ev) => ev.submitter?.value === "unban" ? send("unban", { target: f.target.value }) : send("setRole", { target: f.target.value, role: f.role.value }),
+};
+document.addEventListener("submit", async (e) => {
+  const f = e.target.closest("[data-form]"); if (!f) return;
+  e.preventDefault();
+  try { await FORM[f.dataset.form](f, e); if (f.dataset.form !== "login") f.reset?.(); }
+  catch (err) { toast(err.message, "err"); }
+});
+
+render(true);
+</script>
+</body>
+</html>
