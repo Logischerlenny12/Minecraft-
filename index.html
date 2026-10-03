@@ -4,62 +4,95 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Realm Control</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-:root{--grass:#5fb947;--dirt:#5b4026;--dirt2:#4f3820;--panel:#3a3a3a;--panel2:#2e2e2e;--hi:#6a6a6a;--lo:#161616;--ink:#f2f2f2;--mute:#b0b0b0;--gold:#ffaa00;--red:#ff5555;--aqua:#55ffff;--green:#55ff55;
-  --px:'Press Start 2P',monospace;--vt:'VT323','Courier New',monospace}
+:root{--ink:#f5f7ff;--mute:rgba(235,240,255,.68);--green:#4ade80;--gold:#fbbf24;--red:#fb7185;--aqua:#67e8f9;--r:22px}
 *{box-sizing:border-box}
-body{margin:0;background:#262626;color:var(--ink);font:22px/1.2 var(--vt);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-h1,h2,h3{font-family:var(--px);font-weight:400;margin:0 0 .8rem;line-height:1.5}
-h1{font-size:1.1rem}h3{font-size:.72rem;color:var(--gold)}
+html{background:#1b2146}
+body{margin:0;color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100vh}
+#bg{position:fixed;inset:0;z-index:-1}#bg svg{width:100%;height:100%;display:block}
+h1,h2,h3{margin:0 0 .7rem;font-weight:650;letter-spacing:-.01em}h1{font-size:1.5rem}h2{font-size:1.35rem}
+h3{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mute)}
+.card,.glass,nav,header.bar{background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,.04) 55%),rgba(16,20,40,.42);-webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.06),0 14px 40px rgba(0,0,0,.35)}
+.card{border-radius:var(--r);padding:1rem;margin-bottom:.9rem}
 button,input,select,textarea{font:inherit;color:inherit}
-input,select,textarea{background:#111;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);padding:.35rem .5rem;width:100%}
-textarea{min-height:90px}
-button{background:#6d6d6d;border:2px solid;border-color:#a5a5a5 #333 #333 #a5a5a5;padding:.25rem .8rem;cursor:pointer;text-shadow:2px 2px #3a3a3a}
-button:hover{background:#7b86c4;outline:2px solid #fff;outline-offset:-2px}
-button.go{background:#3f8f2d;border-color:#7edc62 #1e4d14 #1e4d14 #7edc62}
-button.go:hover{background:#4ba836}
-button.bad{background:#a53030;border-color:#ee7a7a #4f1010 #4f1010 #ee7a7a}
-button.sm{padding:0 .5rem;font-size:19px}
-:focus-visible{outline:2px solid var(--aqua);outline-offset:1px}
-label{display:block;color:var(--mute);margin:.5rem 0 .15rem}
-#app{display:grid;grid-template-columns:210px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
-header{grid-column:1/-1;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:.6rem 1rem;border-bottom:8px solid var(--grass);
-  background:var(--dirt);background-image:linear-gradient(45deg,var(--dirt2) 25%,transparent 25%,transparent 75%,var(--dirt2) 75%),linear-gradient(45deg,var(--dirt2) 25%,transparent 25%,transparent 75%,var(--dirt2) 75%);background-size:32px 32px;background-position:0 0,16px 16px}
-.brand{font:.8rem var(--px);text-shadow:3px 3px #000}
-.timer{font:.7rem var(--px);color:var(--gold);text-shadow:2px 2px #000}.timer small{color:#fff;margin-right:.5rem;font-family:var(--vt);font-size:20px}
-nav{background:var(--panel2);border-right:4px solid #000;padding:.6rem;display:flex;flex-direction:column;gap:.35rem}
-nav button{text-align:left}nav button.on{background:#3f8f2d;border-color:#7edc62 #1e4d14 #1e4d14 #7edc62}
-nav .grp{font:.55rem var(--px);color:var(--mute);margin:.7rem 0 .2rem}
-main{padding:1rem;min-width:0}
-.card{background:var(--panel);border:4px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:.9rem;margin-bottom:1rem}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
-.cols2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1rem;align-items:start}
-.coins{font:1.7rem var(--px);color:var(--gold);text-shadow:3px 3px #000}
-.stats{display:flex;gap:1.5rem;margin:0}.stats dt{color:var(--mute)}.stats dd{margin:0;font:.9rem var(--px)}
-.hero{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-end}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.25rem .4rem;border-bottom:2px solid #222;vertical-align:middle}th{color:var(--mute);font-weight:400}
-.pos{color:var(--green)}.neg{color:var(--red)}.lbl{color:var(--mute)}.empty{color:var(--mute)}
-.tag{display:inline-block;padding:0 .4rem;border:2px solid #555;font-size:18px}.tag.r{border-color:var(--red);color:var(--red)}.tag.g{border-color:var(--green);color:var(--green)}.tag.y{border-color:var(--gold);color:var(--gold)}
-.row{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
-.order{background:var(--panel2);border:2px solid #555;border-left:6px solid var(--gold);padding:.6rem;margin-bottom:.7rem}
-.order .oh{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+input,select,textarea{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:.6rem .8rem;-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,#fff 50%),linear-gradient(135deg,#fff 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:2rem}
+option{color:#111}textarea{min-height:90px}input::placeholder{color:var(--mute)}
+button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:.5rem 1rem;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:transform .12s,background .12s}
+button:hover{background:rgba(255,255,255,.24)}button:active{transform:scale(.97)}
+button.go{background:rgba(74,222,128,.32);border-color:rgba(134,239,172,.65)}button.go:hover{background:rgba(74,222,128,.48)}
+button.bad{background:rgba(251,113,133,.30);border-color:rgba(253,164,175,.6)}
+button.sm{padding:.2rem .65rem;font-size:.85rem}
+:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}
+label{display:block;color:var(--mute);font-size:.85rem;margin:.6rem 0 .25rem}
+#app{display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto 1fr;gap:14px;padding:14px;min-height:100vh}
+header.bar{grid-column:1/-1;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:.6rem 1.1rem;border-radius:999px}
+.brand{font-weight:700}.timer{font-weight:650;color:var(--gold)}.timer small{color:#fff;font-weight:400;margin-right:.5rem}
+nav{border-radius:var(--r);padding:.7rem;display:flex;flex-direction:column;gap:.3rem;align-self:start;position:sticky;top:14px}
+nav button{text-align:left;border-color:transparent;background:transparent;box-shadow:none;border-radius:14px}
+nav button.on{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.35)}
+nav .grp{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin:.7rem .4rem .1rem}
+main{min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:.9rem}
+.qgrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:.9rem;align-items:start}
+.row{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:.25rem .8rem;border-radius:999px;font-weight:650}
+.coins{font-weight:700;color:var(--gold)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:middle}th{color:var(--mute);font-weight:500;font-size:.8rem}
+.pos{color:var(--green)}.neg{color:var(--red)}.lbl{color:var(--mute)}.empty{color:var(--mute)}.scroll{overflow-x:auto}
+.tag{display:inline-block;padding:0 .55rem;border-radius:999px;font-size:.78rem;border:1px solid rgba(255,255,255,.3)}.tag.r{border-color:var(--red);color:var(--red)}.tag.g{border-color:var(--green);color:var(--green)}.tag.y{border-color:var(--gold);color:var(--gold)}
+/* Banking */
+.accounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.9rem;margin-bottom:.9rem}
+.acct{display:flex;flex-direction:column;gap:.2rem;text-align:left;padding:1.2rem 1.3rem;border-radius:26px;min-height:150px;justify-content:space-between;color:var(--ink);border:1px solid rgba(255,255,255,.3)}
+.acct.me{background:linear-gradient(135deg,rgba(74,222,128,.42),rgba(16,20,40,.35))}.acct.team{background:linear-gradient(135deg,rgba(251,191,36,.42),rgba(16,20,40,.35))}
+.acct.ghost{background:rgba(255,255,255,.07);border-style:dashed;cursor:default}.acct.sel{outline:2px solid rgba(255,255,255,.7);outline-offset:2px}
+.acct .big{font-size:2.3rem;font-weight:700;letter-spacing:-.02em}.acct .meta{color:var(--mute);font-size:.88rem}
+.seg{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;gap:2px;margin-bottom:.4rem}
+.seg button{border:0;background:transparent;box-shadow:none}.seg button.on{background:rgba(255,255,255,.28)}
+.tx{display:grid;grid-template-columns:36px 1fr auto;gap:.7rem;align-items:center;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.tx:last-child{border:0}.tx small{display:block;color:var(--mute)}
+.dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700}.dot.p{background:rgba(74,222,128,.25);color:var(--green)}.dot.n{background:rgba(251,113,133,.22);color:var(--red)}
+/* Shop */
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.9rem;margin-bottom:.9rem}
+.item{display:flex;flex-direction:column;gap:.4rem;margin:0}.item .cat{color:var(--mute);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}.item .price{color:var(--gold);font-weight:700;font-size:1.2rem}
+/* Aufträge */
+.order{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);border-left:4px solid var(--gold);border-radius:18px;padding:.8rem;margin-bottom:.7rem}
+.order .oh{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;margin-bottom:.2rem}
 .cmd{display:flex;gap:.4rem;align-items:center;margin:.35rem 0}
-code{flex:1;background:#000;color:var(--green);padding:.2rem .4rem;font:20px var(--vt);word-break:break-all;border:2px solid #222}
-.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.7rem}
-.item{background:var(--panel2);border:2px solid #555;padding:.7rem;display:flex;flex-direction:column;gap:.35rem}
-.bar{height:14px;background:#111;border:2px solid #555;margin:.2rem 0 .5rem}.bar i{display:block;height:100%;background:var(--green)}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom));display:grid;gap:.4rem;z-index:9}
-#toast div{background:#000;border:2px solid #fff;padding:.4rem .8rem;max-width:90vw}#toast .ok{border-color:var(--green)}#toast .err{border-color:var(--red)}
-.login{max-width:440px;margin:8vh auto;padding:1rem}
-.scroll{overflow-x:auto}.warn{border-left:6px solid var(--red)}
-@media (max-width:820px){#app{grid-template-columns:1fr}nav{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:4px solid #000}nav .grp{display:none}.cols2{grid-template-columns:1fr}body{font-size:20px}}
+code{flex:1;background:rgba(0,0,0,.4);color:#86efac;padding:.35rem .6rem;border-radius:12px;font:14px ui-monospace,Menlo,monospace;word-break:break-all}
+/* Schnellansicht kompakt */
+.compact{padding:.65rem .75rem;border-radius:18px;margin-bottom:.6rem}.compact h3{margin-bottom:.4rem}
+.compact select,.compact input{padding:.3rem .55rem;font-size:.9rem;border-radius:10px}
+.drow{display:flex;gap:.35rem;align-items:center;margin-bottom:.35rem}.drow select{flex:1;min-width:0}.drow span{color:var(--mute)}
+.chk{display:flex;align-items:center;gap:.3rem;margin:0;white-space:nowrap;font-size:.85rem}.chk input{width:auto}.tiny{width:64px!important}
+.pl{border-bottom:1px solid rgba(255,255,255,.1)}.pn{display:flex;justify-content:space-between;width:100%;border:0;background:transparent;box-shadow:none;border-radius:10px;padding:.35rem .4rem;font-size:.95rem}.pn small{color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:.25rem;padding:.2rem .2rem .5rem}.chip{padding:.1rem .55rem;font-size:.8rem}
+.warn{border-left:4px solid var(--red)}
+.bar{height:12px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden;margin:.2rem 0 .5rem}.bar i{display:block;height:100%;background:var(--green)}
+/* Kauf-Popup */
+.overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(5,8,20,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);z-index:20;animation:fade .2s}
+.sheet{width:min(360px,90vw);border-radius:30px;padding:1.6rem;text-align:center;display:grid;gap:.6rem;justify-items:center;animation:pop .25s}
+.ring{width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p)*1%),rgba(255,255,255,.15) 0);display:grid;place-items:center}
+.ring span{width:106px;height:106px;border-radius:50%;background:rgba(14,18,36,.85);display:grid;place-items:center;font-size:2.6rem;font-weight:700}
+.check{width:96px;height:96px}.check circle{fill:rgba(74,222,128,.2);stroke:var(--green);stroke-width:3;stroke-dasharray:152;stroke-dashoffset:152;animation:draw .5s forwards}
+.check path{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .4s .4s forwards}
+.bad-x{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;font-size:2rem;background:rgba(251,113,133,.25);color:var(--red)}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes fade{from{opacity:0}}@keyframes pop{from{transform:scale(.9);opacity:0}}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom));display:grid;gap:.4rem;z-index:30}
+#toast div{background:rgba(16,20,40,.8);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.3);padding:.55rem 1rem;border-radius:999px;max-width:90vw}#toast .ok{border-color:var(--green)}#toast .err{border-color:var(--red)}
+.login{max-width:430px;margin:9vh auto;padding:1.4rem;border-radius:28px}
+@media (max-width:860px){
+  #app{grid-template-columns:1fr;padding:10px;padding-bottom:84px}.qgrid{grid-template-columns:1fr}
+  nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));top:auto;flex-direction:row;overflow-x:auto;border-radius:999px;z-index:10;padding:.4rem}
+  nav .grp{display:none}nav button{white-space:nowrap}header.bar{border-radius:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div id="root"></div><div id="toast" aria-live="polite"></div>
+<div id="bg"></div><div id="root"></div><div id="modal"></div><div id="toast" aria-live="polite"></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -74,8 +107,8 @@ const auth = getAuth(app), db = getFirestore(app);
 
 /* ================= State & Helfer ================= */
 const CFG0 = { jail: "0 200 0", spawn: "0 100 0", minigame: "0 100 0", startCoins: 100, killReward: 25, bountyOnKill: 50 };
-const S = { uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], state: null, vote: null, ballots: [], cfg: {} };
-let unsubs = [], started = false, dirty = false, firstOrders = true, busy = false;
+const S = { walTab: "me", sendFrom: "me", openUser: "", q: "", pop: null, teamTx: [], uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], state: null, vote: null, ballots: [], cfg: {} };
+let teamSeen, teamUn, unsubs = [], started = false, dirty = false, firstOrders = true, busy = false;
 const C = () => ({ ...CFG0, ...S.cfg });
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -120,11 +153,12 @@ onAuthStateChanged(auth, (u) => {
   S.uid = u.uid;
   meUnsub = onSnapshot(doc(db, "users", u.uid), (d) => {
     S.me = d.exists() ? { id: d.id, ...d.data() } : null;
+    if ((S.me?.teamId ?? null) !== teamSeen) { teamSeen = S.me?.teamId ?? null; listenTeamTx(); }
     if (S.me?.status === "active" && !started) { started = true; if (isStaff()) S.view = "quick"; else S.view = "wallet"; listen(); }
     render(true);
   });
 });
-function stop() { unsubs.forEach((f) => f()); unsubs = []; started = false; }
+function stop() { unsubs.forEach((f) => f()); unsubs = []; started = false; teamUn?.(); teamUn = null; teamSeen = undefined; }
 
 function listen() {
   const on = (ref, fn) => unsubs.push(onSnapshot(ref, (s) => { fn(s); render(); }, (e) => console.warn(e.code)));
@@ -164,31 +198,30 @@ async function req(type, payload = {}) {
 const U = (id) => doc(db, "users", id);
 const addTx = (t, uid, amount, reason, type, after) => t.set(doc(collection(db, "tx")), { uid, amount, reason, type, balanceAfter: after, ts: serverTimestamp() });
 
+const addTeamTx = (t, teamId, amount, reason, by, after) => t.set(doc(collection(db, "tx")), { teamId, uid: null, amount, reason, by, type: "team", balanceAfter: after, ts: serverTimestamp() });
 const H = {
   async transfer(r) {
-    const to = r.payload.to, a = amt(r.payload.amount);
-    if (to === r.uid) throw Error("Nicht an dich selbst");
+    const a = amt(r.payload.amount), from = r.payload.from; let to = r.payload.to;
+    if (!["me", "team"].includes(from)) throw Error("Ungültiges Konto");
+    if (to === r.uid) to = "me";
+    if (from === to) throw Error("Wähle zwei verschiedene Konten");
     return runTransaction(db, async (t) => {
-      const [s1, s2] = [await t.get(U(r.uid)), await t.get(U(to))];
-      if (!s2.exists() || s2.data().status !== "active") throw Error("Empfänger unbekannt");
-      const b1 = s1.data().balance, b2 = s2.data().balance;
-      if (b1 < a) throw Error("Nicht genug Coins");
-      t.update(U(r.uid), { balance: b1 - a }); t.update(U(to), { balance: b2 + a });
-      addTx(t, r.uid, -a, `Überweisung an ${s2.data().gamertag}`, "transfer", b1 - a);
-      addTx(t, to, a, `Überweisung von ${s1.data().gamertag}`, "transfer", b2 + a);
-      return `${a} Coins an ${s2.data().gamertag} gesendet`;
-    });
-  },
-  async vault(r) {
-    const a = amt(r.payload.amount), out = r.payload.dir === "out";
-    return runTransaction(db, async (t) => {
-      const us = await t.get(U(r.uid)), tid = us.data().teamId;
-      if (!tid) throw Error("Du bist in keinem Team");
-      const ts = await t.get(doc(db, "teams", tid)), b = us.data().balance, v = ts.data().vault;
-      if (out ? v < a : b < a) throw Error(out ? "Tresor hat zu wenig" : "Nicht genug Coins");
-      t.update(U(r.uid), { balance: out ? b + a : b - a }); t.update(doc(db, "teams", tid), { vault: out ? v - a : v + a });
-      addTx(t, r.uid, out ? a : -a, out ? "Aus Team-Tresor" : "In Team-Tresor", "team", out ? b + a : b - a);
-      return out ? `${a} Coins entnommen` : `${a} Coins eingezahlt`;
+      const us = await t.get(U(r.uid)), me = us.data(), tid = me.teamId;
+      if ((from === "team" || to === "team") && !tid) throw Error("Du bist in keinem Team");
+      const tref = tid ? doc(db, "teams", tid) : null, ts = tref ? await t.get(tref) : null;
+      const toUser = !["me", "team"].includes(to), rs = toUser ? await t.get(U(to)) : null;
+      if (toUser && (!rs.exists() || rs.data().status !== "active")) throw Error("Empfänger unbekannt");
+      let bal = me.balance, vault = ts?.data().vault ?? 0, rbal = rs?.data().balance ?? 0;
+      if ((from === "me" ? bal : vault) < a) throw Error("Nicht genug Guthaben");
+      if (from === "me") bal -= a; else vault -= a;
+      if (to === "me") bal += a; else if (to === "team") vault += a; else rbal += a;
+      t.update(U(r.uid), { balance: bal }); if (tref) t.update(tref, { vault }); if (toUser) t.update(U(to), { balance: rbal });
+      const rn = toUser ? rs.data().gamertag : null;
+      const log = (acc, amount, reason) => (acc === "me" ? addTx(t, r.uid, amount, reason, "transfer", bal) : addTeamTx(t, tid, amount, reason, me.gamertag, vault));
+      log(from, -a, toUser ? `Überweisung an ${rn}` : `Umbuchung auf ${to === "me" ? "Mein Konto" : "Team-Konto"}`);
+      if (toUser) addTx(t, to, a, `Überweisung von ${me.gamertag}${from === "team" ? " (Team-Konto)" : ""}`, "transfer", rbal);
+      else log(to, a, `Umbuchung von ${from === "me" ? "Mein Konto" : "Team-Konto"}`);
+      return toUser ? `${a} Coins an ${rn} gesendet` : "Umgebucht";
     });
   },
   async bounty(r) {
@@ -205,15 +238,17 @@ const H = {
     });
   },
   async buy(r) {
-    return runTransaction(db, async (t) => {
+    const oref = doc(collection(db, "orders"));
+    const msg = await runTransaction(db, async (t) => {
       const [us, it] = [await t.get(U(r.uid)), await t.get(doc(db, "shop_items", String(r.payload.itemId)))];
       if (!it.exists() || !it.data().active) throw Error("Artikel nicht verfügbar");
       const b = us.data().balance, p = it.data().price; if (b < p) throw Error("Nicht genug Coins");
       const g = us.data().gamertag;
       t.update(U(r.uid), { balance: b - p }); addTx(t, r.uid, -p, `Shop: ${it.data().name}`, "shop", b - p);
-      t.set(doc(collection(db, "orders")), { kind: "shop", title: `Kauf: ${it.data().name}`, gamertag: g, uid: r.uid, commands: (it.data().commands ?? []).map((c) => c.replaceAll("{player}", q(g))), note: "", status: "open", createdAt: serverTimestamp() });
-      return `${it.data().name} gekauft – wird bald im Spiel geliefert`;
+      t.set(oref, { kind: "shop", title: `Kauf: ${it.data().name}`, gamertag: g, uid: r.uid, commands: (it.data().commands ?? []).map((c) => c.replaceAll("{player}", q(g))), note: "", status: "open", createdAt: serverTimestamp() });
+      return `${it.data().name} gekauft`;
     });
+    return { msg, orderId: oref.id };
   },
   async kill(r) {
     if (!["mod", "admin"].includes(r.role)) throw Error("Keine Berechtigung");
@@ -248,8 +283,8 @@ async function drain() {
     try {
       const r = d.data(), ru = (await getDoc(U(r.uid))).data();
       if (!ru || ru.status !== "active" || !H[r.type]) throw Error("Ungültige Anfrage");
-      const result = await H[r.type]({ ...r, role: ru.role, gamertag: ru.gamertag });
-      await updateDoc(ref, { status: "done", result });
+      const res = await H[r.type]({ ...r, role: ru.role, gamertag: ru.gamertag });
+      await updateDoc(ref, { status: "done", result: res.msg ?? res, orderId: res.orderId ?? null });
     } catch (e) { await updateDoc(ref, { status: "error", result: e.message }).catch(() => {}); }
   }
   busy = false;
@@ -288,19 +323,24 @@ const pendingBox = () => { const p = S.users.filter((u) => u.status === "pending
 const V = {
   /* ---------- Spieler ---------- */
   wallet() {
-    const u = S.me, kd = u.deaths ? (u.kills / u.deaths).toFixed(2) : u.kills ?? 0;
-    return `<section class="card hero"><div><div class="lbl">Kontostand</div><div class="coins">${fmt(u.balance)}</div></div>
-      <dl class="stats"><div><dt>Kills</dt><dd>${fmt(u.kills)}</dd></div><div><dt>Tode</dt><dd>${fmt(u.deaths)}</dd></div><div><dt>K/D</dt><dd>${kd}</dd></div></dl></section>
-      <div class="cols"><form class="card" data-form="transfer"><h3>Coins senden</h3><label for="to">Empfänger</label><select id="to" name="to" required>${userOpts("", true)}</select>
-        <label for="am">Betrag</label><input id="am" name="amount" type="number" min="1" required><p><button class="go">Senden</button></p></form>
-      <div class="card"><h3>Verlauf</h3>${S.tx.length ? `<div class="scroll"><table><tbody>${S.tx.map((t) => `<tr><td class="${t.amount >= 0 ? "pos" : "neg"}">${t.amount >= 0 ? "+" : ""}${fmt(t.amount)}</td><td>${esc(t.reason)}</td><td class="lbl">${date(t.ts)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Noch keine Buchungen.</p>`}</div></div>`;
-  },
-  team() {
-    const t = S.teams.find((x) => x.id === S.me.teamId);
-    if (!t) return `<div class="card"><h3>Team-Tresor</h3><p class="empty">Du bist keinem Team zugeordnet. Ein Admin legt Teams an.</p></div>`;
-    return `<section class="card hero"><div><div class="lbl">${esc(t.name)} · ${t.members.map(uname).map(esc).join(" & ")}</div><div class="coins">${fmt(t.vault)}</div></div></section>
-      <form class="card" data-form="vault" style="max-width:420px"><h3>Tresor</h3><label for="va">Betrag</label><input id="va" name="amount" type="number" min="1" required>
-      <p class="row"><button class="go" name="dir" value="in">Einzahlen</button><button name="dir" value="out">Entnehmen</button></p></form>`;
+    const u = S.me, team = S.teams.find((x) => x.id === u.teamId), tab = S.walTab === "team" && team ? "team" : "me", from = S.sendFrom === "team" && team ? "team" : "me";
+    const kd = u.deaths ? (u.kills / u.deaths).toFixed(2) : u.kills ?? 0;
+    const others = active().filter((x) => x.id !== S.uid).map((x) => [x.id, x.gamertag]);
+    const dest = (from === "me" ? (team ? [["team", "Team-Konto"]] : []) : [["me", "Mein Konto"]]).concat(others);
+    const list = tab === "team" ? S.teamTx : S.tx;
+    return `<div class="topline"><h2>Wallet</h2></div>
+      <div class="accounts">
+        <button class="acct me ${tab === "me" ? "sel" : ""}" data-act="walTab" data-t="me"><span class="lbl">Mein Konto</span><span class="big">🪙 ${fmt(u.balance)}</span><span class="meta">${esc(u.gamertag)} · ${fmt(u.kills)} Kills · ${fmt(u.deaths)} Tode · K/D ${kd}</span></button>
+        ${team ? `<button class="acct team ${tab === "team" ? "sel" : ""}" data-act="walTab" data-t="team"><span class="lbl">Team-Konto · ${esc(team.name)}</span><span class="big">🪙 ${fmt(team.vault)}</span><span class="meta">${team.members.map(uname).map(esc).join(" & ")}</span></button>`
+        : `<div class="acct ghost"><span class="lbl">Team-Konto</span><span class="meta">Du bist noch in keinem Team. Ein Admin legt Teams an.</span></div>`}
+      </div>
+      <form class="card" data-form="transfer"><h3>Überweisen</h3>
+        <div class="seg" role="group" aria-label="Von Konto"><button type="button" class="${from === "me" ? "on" : ""}" data-act="sendFrom" data-f="me">Von: Mein Konto</button>${team ? `<button type="button" class="${from === "team" ? "on" : ""}" data-act="sendFrom" data-f="team">Von: Team-Konto</button>` : ""}</div>
+        <input type="hidden" name="from" value="${from}">
+        <div class="cols"><div><label for="to">An</label><select id="to" name="to" required>${dest.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select></div>
+        <div><label for="am">Betrag</label><input id="am" name="amount" type="number" min="1" inputmode="numeric" required></div></div>
+        <p><button class="go">Senden</button></p></form>
+      <div class="card"><h3>Umsätze · ${tab === "team" ? "Team-Konto" : "Mein Konto"}</h3>${list.length ? list.map(txRow).join("") : `<p class="empty">Noch keine Buchungen.</p>`}</div>`;
   },
   bounty() {
     const targets = active().filter((u) => u.id !== S.uid && (!S.me.teamId || u.teamId !== S.me.teamId)), sum = {};
@@ -312,9 +352,9 @@ const V = {
   },
   shop() {
     const items = S.shop.filter((i) => i.active).sort((a, b) => a.price - b.price);
-    return `<div class="card"><h3>Shop</h3><p class="lbl">Guthaben: <b>${fmt(S.me.balance)}</b>. Gekaufte Artikel werden von einem Admin im Spiel geliefert.</p>
-      ${items.length ? `<div class="shop">${items.map((i) => `<div class="item"><b>${esc(i.name)}</b><span class="lbl">${esc(i.category ?? "")}</span><span class="coins" style="font-size:1rem">${fmt(i.price)}</span><button class="go" data-act="buy" data-id="${esc(i.id)}">Kaufen</button></div>`).join("")}</div>` : `<p class="empty">Der Shop ist noch leer.</p>`}</div>
-      <div class="card"><h3>Meine Aufträge</h3>${S.myOrders.length ? `<table><tbody>${S.myOrders.slice(0, 15).map((o) => `<tr><td>${esc(o.title)}</td><td>${o.status === "done" ? '<span class="tag g">Auftrag ausgeführt</span>' : '<span class="tag y">in Bearbeitung</span>'}</td><td class="lbl">${date(o.createdAt)}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Noch nichts gekauft.</p>`}</div>`;
+    return `<div class="topline"><h2>Shop</h2><span class="pill">🪙 ${fmt(S.me.balance)}</span></div>
+      ${items.length ? `<div class="shop">${items.map((i) => `<div class="item card"><div class="cat">${esc(i.category || "Item")}</div><b>${esc(i.name)}</b><span class="price">🪙 ${fmt(i.price)}</span><button class="go" data-act="buy" data-id="${esc(i.id)}">Kaufen</button></div>`).join("")}</div>` : `<div class="card empty">Der Shop ist noch leer.</div>`}
+      <div class="card"><h3>Meine Aufträge</h3>${S.myOrders.length ? `<table><tbody>${S.myOrders.slice(0, 15).map((o) => `<tr><td>${esc(o.title)}</td><td>${o.status === "done" ? '<span class="tag g">✓ ausgeführt</span>' : '<span class="tag y">in Bearbeitung</span>'}</td><td class="lbl">${date(o.createdAt)}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Noch nichts gekauft.</p>`}</div>`;
   },
   vote() {
     const v = S.vote; if (!v?.open) return `<div class="card"><h3>Minigame-Abstimmung</h3><p class="empty">Gerade läuft keine Abstimmung.</p></div>`;
@@ -336,17 +376,12 @@ const V = {
   /* ---------- Schnellansicht ---------- */
   quick() {
     const open = S.orders.filter((o) => o.status === "open").sort(byTime);
-    return `<div class="cols2"><section><h3>Offene Aufträge (${open.length})</h3>${open.map(orderCard).join("") || '<p class="empty">Keine offenen Aufträge. Neue erscheinen hier automatisch.</p>'}</section>
-      <section>${pendingBox()}
-      <form class="card" data-form="death"><h3>Tod melden</h3><label for="dv">Gestorben</label><select id="dv" name="victim" required>${userOpts(S.victim)}</select>
-        <label for="dk">Getötet von</label><select id="dk" name="killer"><option value="">– niemand / Umwelt –</option>${userOpts()}</select>
-        <label class="row"><input type="checkbox" name="bo" checked style="width:auto"> Kopfgeld auf den Killer aussetzen</label><input name="ba" type="number" min="0" value="${C().bountyOnKill}" aria-label="Kopfgeld Betrag">
-        <p><button class="go">Eintragen</button></p></form>
-      <div class="card"><h3>Spieler</h3><div class="scroll"><table><tbody>${active().map((u) => `<tr><td><b>${esc(u.gamertag)}</b><div class="lbl">${fmt(u.balance)} Coins</div></td><td><div class="row">
-        <button class="sm bad" data-act="victim" data-id="${u.id}">Tod</button><button class="sm" data-act="freeze" data-id="${u.id}">Freeze</button><button class="sm" data-act="unfreeze" data-id="${u.id}">Auftauen</button>
-        <button class="sm" data-act="jail" data-id="${u.id}">Knast</button><button class="sm" data-act="unjail" data-id="${u.id}">Raus</button><button class="sm" data-act="warn" data-id="${u.id}">Warn</button>
-        <button class="sm" data-act="kick" data-id="${u.id}">Kick</button><button class="sm bad" data-act="ban" data-id="${u.id}">Bann</button><button class="sm" data-act="ghost" data-id="${u.id}">Ghost</button></div></td></tr>`).join("")}</tbody></table></div>
-        <p class="row"><button class="sm" data-act="unghost">Wieder sichtbar</button></p></div></section></div>`;
+    return `<div class="qgrid"><section><h3>Offene Aufträge (${open.length})</h3>${open.map(orderCard).join("") || '<div class="card empty">Keine offenen Aufträge. Neue erscheinen hier automatisch.</div>'}</section>
+      <aside>${pendingBox()}
+        <form class="card compact" data-form="death"><h3>☠ Tod melden</h3>
+          <div class="drow"><select name="victim" aria-label="Gestorben" required>${userOpts(S.victim)}</select><span>→</span><select name="killer" aria-label="Getötet von"><option value="">Umwelt</option>${userOpts()}</select></div>
+          <div class="drow"><label class="chk"><input type="checkbox" name="bo" checked> Kopfgeld</label><input class="tiny" name="ba" type="number" min="0" value="${C().bountyOnKill}" aria-label="Kopfgeld Betrag"><button class="go sm" style="margin-left:auto">Eintragen</button></div></form>
+        <div class="card compact"><h3>Spieler (${active().length})</h3><input id="pq" placeholder="Suchen …" value="${esc(S.q)}" style="margin-bottom:.4rem"><div id="plist">${playerList()}</div></div></aside></div>`;
   },
 
   /* ---------- Vollansicht ---------- */
@@ -388,10 +423,11 @@ function render(force) {
   if (!S.uid) return loginView();
   if (!S.me) return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>Konto wird geladen …</p></div>`);
   if (S.me.status !== "active") return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>${S.me.status === "rejected" ? "Deine Anmeldung wurde abgelehnt." : `Hallo <b>${esc(S.me.gamertag)}</b>! Dein Konto wartet auf Freischaltung durch einen Admin.`}</p><p><button data-act="logout">Abmelden</button></p></div>`);
-  const navBtn = ([k, l]) => `<button data-act="nav" data-v="${k}" class="${S.view === k ? "on" : ""}">${l}</button>`;
-  const nav = (isStaff() ? `<div class="grp">ADMIN</div>${navBtn(["quick", "Schnellansicht"])}${navBtn(["full", "Vollansicht"])}<div class="grp">PORTAL</div>` : "") + PNAV.map(navBtn).join("") + `<div class="grp"></div><button data-act="logout">Abmelden</button>`;
-  const v = (S.view === "quick" || S.view === "full") && !isStaff() ? "wallet" : S.view;
-  $("#root").innerHTML = `<div id="app"><header><span class="brand">Realm Control</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${(V[v] || V.wallet)()}</main></div>`;
+  const nb = (k, l) => `<button data-act="nav" data-v="${k}" class="${S.view === k ? "on" : ""}">${l}</button>`;
+  const nav = (isStaff() ? `<div class="grp">Admin</div>${nb("quick", "⚡ Schnellansicht")}${nb("full", "🧰 Vollansicht")}` : "") +
+    `<div class="grp">Konto</div>${nb("wallet", "💳 Wallet")}${nb("shop", "🛒 Shop")}<div class="grp">Event</div>${nb("bounty", "🎯 Kopfgelder")}${nb("vote", "🗳 Abstimmung")}<div class="grp">Regeln</div>${nb("report", "🚩 Melden")}${nb("punish", "⚖ Strafen")}<div class="grp"></div><button data-act="logout">Abmelden</button>`;
+  const v = ["quick", "full"].includes(S.view) && !isStaff() ? "wallet" : V[S.view] ? S.view : "wallet";
+  $("#root").innerHTML = `<div id="app"><header class="bar"><span class="brand">⛏ Realm Control</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${V[v]()}</main></div>`;
   tick();
 }
 function loginView() {
@@ -424,7 +460,11 @@ const ACT = {
   done: (b) => updateDoc(doc(db, "orders", b.dataset.id), { status: "done", doneAt: serverTimestamp(), doneBy: S.me.gamertag }),
   approve: (b) => approve(b.dataset.id).then(() => toast("Freigeschaltet", "ok")),
   reject: (b) => updateDoc(U(b.dataset.id), { status: "rejected" }),
-  buy: (b) => req("buy", { itemId: b.dataset.id }),
+  buy: (b) => buyItem(b.dataset.id),
+  walTab: (b) => { S.walTab = b.dataset.t; render(true); },
+  sendFrom: (b) => { S.sendFrom = b.dataset.f; render(true); },
+  pOpen: (b) => { S.openUser = S.openUser === b.dataset.id ? "" : b.dataset.id; $("#plist").innerHTML = playerList(); },
+  popClose: () => closePop(),
   vote: (b) => setDoc(doc(db, "events", "vote", "ballots", S.uid), { option: b.dataset.id, round: S.vote.round }).then(() => toast("Stimme gespeichert", "ok")),
   victim: (b) => { S.victim = b.dataset.id; toast(`${user(b.dataset.id).gamertag} als „gestorben“ vorgewählt`); render(true); },
   freeze: (b) => { const u = user(b.dataset.id); order(`Freeze: ${u.gamertag}`, CMD.freeze(u.gamertag)); },
@@ -458,8 +498,7 @@ const FORM = {
       } else await signInWithEmailAndPassword(auth, mail(g), p);
     } catch (e) { S.authMsg = { "auth/email-already-in-use": "Dieser Gamertag ist schon registriert.", "auth/invalid-credential": "Gamertag oder Passwort falsch.", "auth/weak-password": "Passwort zu kurz." }[e.code] ?? e.message; loginView(); }
   },
-  transfer: (f) => req("transfer", { to: f.to.value, amount: +f.amount.value }),
-  vault: (f, e) => req("vault", { dir: e.submitter?.value || "in", amount: +f.amount.value }),
+  transfer: (f) => req("transfer", { from: f.from.value, to: f.to.value, amount: +f.amount.value }),
   bounty: (f) => req("bounty", { target: f.target.value, amount: +f.amount.value }),
   async report(f) { await addDoc(collection(db, "reports"), { uid: S.uid, reporterName: S.me.gamertag, target: f.target.value, targetName: uname(f.target.value), reason: f.reason.value, text: f.text.value.trim(), status: "open", createdAt: serverTimestamp() }); toast("Meldung gesendet", "ok"); },
   death: (f) => { S.victim = ""; return req("kill", { victim: f.victim.value, killer: f.killer.value || null, bountyAmount: f.killer.value && f.bo.checked ? Math.max(0, Math.floor(+f.ba.value || 0)) : 0 }); },
@@ -480,6 +519,69 @@ document.addEventListener("submit", async (e) => {
   const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
   try { await FORM[f.dataset.form](f, e); if (!["auth", "cfg"].includes(f.dataset.form)) f.reset?.(); } catch (x) { toast(x.message, "err"); }
 });
+function listenTeamTx() {
+  teamUn?.(); teamUn = null; S.teamTx = [];
+  if (!S.me?.teamId || S.me.status !== "active") return;
+  teamUn = onSnapshot(query(collection(db, "tx"), where("teamId", "==", S.me.teamId)),
+    (s) => { S.teamTx = s.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.ts?.seconds ?? 9e12) - (a.ts?.seconds ?? 9e12)).slice(0, 40); render(); },
+    (e) => console.warn(e.code));
+}
+function txRow(t) {
+  const pos = t.amount >= 0;
+  return `<div class="tx"><span class="dot ${pos ? "p" : "n"}">${pos ? "↓" : "↑"}</span><div><b>${esc(t.reason)}</b><small>${date(t.ts)}${t.by ? " · " + esc(t.by) : ""}</small></div><b class="${pos ? "pos" : "neg"}">${pos ? "+" : ""}${fmt(t.amount)}</b></div>`;
+}
+function playerList() {
+  const ql = S.q.trim().toLowerCase(), chip = (a, id, l) => `<button class="chip sm ${a === "ban" ? "bad" : ""}" data-act="${a}" data-id="${id}">${l}</button>`;
+  const rows = active().filter((u) => !ql || u.gamertag.toLowerCase().includes(ql)).map((u) => `<div class="pl"><button class="pn" data-act="pOpen" data-id="${u.id}"><span>${esc(u.gamertag)}</span><small>🪙 ${fmt(u.balance)}</small></button>${S.openUser === u.id ? `<div class="chips">${[["victim", "☠ Tod"], ["freeze", "🧊 Freeze"], ["unfreeze", "Auftauen"], ["jail", "🔒 Knast"], ["unjail", "🔓 Raus"], ["warn", "⚠ Warn"], ["kick", "👢 Kick"], ["ban", "🔨 Bann"], ["ghost", "👻 Ghost"]].map(([a, l]) => chip(a, u.id, l)).join("")}</div>` : ""}</div>`).join("");
+  return (rows || '<p class="empty">Keine Treffer.</p>') + `<p style="margin:.5rem 0 0"><button class="sm" data-act="unghost">Wieder sichtbar</button></p>`;
+}
+
+/* ===== Kauf-Popup mit 60-Sekunden-Countdown ===== */
+async function buyItem(id) {
+  const it = S.shop.find((i) => i.id === id); if (!it) return;
+  if (S.me.balance < it.price) return toast("Nicht genug Coins", "err");
+  closePop();
+  const ref = await addDoc(collection(db, "requests"), { type: "buy", payload: { itemId: id }, uid: S.uid, status: "pending", createdAt: serverTimestamp() });
+  const p = (S.pop = { title: it.name, start: Date.now(), phase: "wait", msg: "", un: [] });
+  p.un.push(onSnapshot(ref, (d) => {
+    const s = d.data(); if (S.pop !== p || !s) return;
+    if (s.status === "error") { p.phase = "error"; p.msg = s.result; renderModal(); }
+    if (s.status === "done" && s.orderId && !p.watch) {
+      p.watch = true;
+      p.un.push(onSnapshot(doc(db, "orders", s.orderId), (o) => { if (S.pop === p && o.data()?.status === "done") { p.phase = "done"; renderModal(); } }));
+    }
+  }));
+  renderModal();
+}
+function closePop() { S.pop?.un.forEach((f) => f()); S.pop = null; renderModal(); }
+function renderModal() {
+  const m = $("#modal"), p = S.pop; if (!p) { m.innerHTML = ""; return; }
+  const left = Math.max(0, 60 - Math.floor((Date.now() - p.start) / 1000));
+  let body;
+  if (p.phase === "done") body = `<svg class="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg><h2>Auftrag ausgeführt</h2><p class="lbl">${esc(p.title)} wurde geliefert. Viel Spaß!</p><button class="go" data-act="popClose">Super</button>`;
+  else if (p.phase === "error") body = `<div class="bad-x">✕</div><h2>Kauf fehlgeschlagen</h2><p class="lbl">${esc(p.msg)}</p><button data-act="popClose">Schließen</button>`;
+  else body = `<div class="ring" style="--p:${(left / 60) * 100}"><span>${left}</span></div><h2>Auftrag wird ausgeführt</h2><b>${esc(p.title)}</b>${left === 0 ? `<p class="lbl">Das dauert etwas länger. Dein Auftrag bleibt offen, den Status siehst du im Shop unter „Meine Aufträge“.</p><button data-act="popClose">Schließen</button>` : `<p class="lbl">Ein Admin liefert dein Item im Spiel.</p>`}`;
+  m.innerHTML = `<div class="overlay"><div class="card sheet" role="dialog" aria-live="polite">${body}</div></div>`;
+}
+setInterval(() => { if (S.pop?.phase === "wait") renderModal(); }, 1000);
+document.addEventListener("input", (e) => { if (e.target.id === "pq") { S.q = e.target.value; $("#plist").innerHTML = playerList(); } });
+
+/* ===== Minecraft-Landschaft als Hintergrund ===== */
+function buildBg() {
+  const W = 1600, Hh = 900, B = 50, rnd = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const ridge = (base, amp, seed) => { const hs = []; let h = base; for (let i = 0; i < W / B; i++) { h += (rnd(i + seed) - 0.5) * amp; h = Math.max(base - amp * 2, Math.min(base + amp * 2, h)); hs.push(Math.round(h / B) * B); } return hs; };
+  const fill = (hs, c) => hs.map((y, i) => `<rect x="${i * B}" y="${y}" width="${B + 1}" height="${Hh - y}" fill="${c}"/>`).join("");
+  const far = ridge(520, 90, 3), mid = ridge(650, 60, 17), near = ridge(780, 28, 41);
+  let o = `<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2452"/><stop offset=".5" stop-color="#5a4a96"/><stop offset=".8" stop-color="#e8788a"/><stop offset="1" stop-color="#ffb26b"/></linearGradient></defs><rect width="${W}" height="${Hh}" fill="url(#sky)"/>`;
+  o += `<rect x="1150" y="180" width="170" height="170" fill="#fff1b8" fill-opacity=".25"/><rect x="1180" y="210" width="110" height="110" fill="#fff1b8"/>`;
+  [[150, 120], [520, 200], [900, 90], [1330, 330]].forEach(([x, y], i) => { o += `<g fill="#fff" fill-opacity=".5"><rect x="${x}" y="${y}" width="200" height="${B}"/><rect x="${x + 50}" y="${y - B}" width="100" height="${B}"/><rect x="${x + 100 + i * 10}" y="${y + B}" width="100" height="${B / 2}"/></g>`; });
+  o += fill(far, "#3b4283") + fill(mid, "#2d5f55");
+  o += near.map((y, i) => `<rect x="${i * B}" y="${y}" width="${B + 1}" height="${B}" fill="#5fb947"/><rect x="${i * B}" y="${y + B}" width="${B + 1}" height="${Hh}" fill="#7a5230"/>${rnd(i + 70) > 0.7 ? `<rect x="${i * B}" y="${y + B * (1 + Math.floor(rnd(i) * 3))}" width="${B}" height="${B}" fill="#5b3d22"/>` : ""}`).join("");
+  near.forEach((y, i) => { if (rnd(i + 40) > 0.84) o += `<rect x="${i * B}" y="${y - 2 * B}" width="${B}" height="${2 * B}" fill="#6b4a2b"/><rect x="${(i - 1) * B}" y="${y - 4 * B}" width="${3 * B}" height="${2 * B}" fill="#3f8f2d"/><rect x="${i * B}" y="${y - 5 * B}" width="${B}" height="${B}" fill="#4aa335"/>`; });
+  $("#bg").innerHTML = `<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="xMidYMax slice" shape-rendering="crispEdges" aria-hidden="true">${o}</svg>`;
+}
+buildBg();
+
 render(true);
 </script>
 </body>
