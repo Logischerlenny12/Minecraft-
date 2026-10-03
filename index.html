@@ -91,8 +91,9 @@ code{flex:1;background:rgba(0,0,0,.4);color:#86efac;padding:.35rem .6rem;border-
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* Hintergrund: Verlauf als Ersatz. Dein eigenes Bild: hier "background:#10162c url(data:image/jpeg;base64,...) center/cover no-repeat" einsetzen */
-#bg{background:radial-gradient(circle at 20% 10%,#33428f,#1b2146 45%,#10162c 80%) center/cover no-repeat}
+/* HINTERGRUNDFOTO: Entweder die Bilddatei als "bg.jpg" neben diese Datei legen,
+   oder diese ganze #bg-Zeile durch deine alte Zeile "#bg{background:#10162c url(data:image/jpeg;base64,...) center/cover no-repeat}" ersetzen. */
+#bg{background:url(bg.jpg) center/cover no-repeat,radial-gradient(circle at 20% 10%,#33428f,#1b2146 45%,#10162c 80%) center/cover no-repeat}
 #bg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(8,12,28,.15),rgba(8,12,28,.5))}
 /* Bedienung: größere Ziele, klare Navigation */
 button{min-height:42px}button.sm{min-height:34px}
@@ -111,14 +112,14 @@ nav .ic{font-size:1.3rem;width:1.7rem;text-align:center}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, doc, collection, onSnapshot, addDoc, setDoc, updateDoc, deleteDoc, getDoc, getDocs, runTransaction, query, where, orderBy, limit, serverTimestamp, Timestamp }
+import { initializeFirestore, doc, collection, onSnapshot, addDoc, setDoc, updateDoc, deleteDoc, getDoc, getDocs, runTransaction, query, where, orderBy, limit, serverTimestamp, Timestamp }
   from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyAkOOgBdY5vrYlxNZq4F0YctNANTrbXdwQ", authDomain: "minecraft-virtuell.firebaseapp.com", projectId: "minecraft-virtuell",
   storageBucket: "minecraft-virtuell.firebasestorage.app", messagingSenderId: "931259543545", appId: "1:931259543545:web:5c4ef885305d8df7501728",
 });
-const auth = getAuth(app), db = getFirestore(app);
+const auth = getAuth(app), db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
 
 /* ================= State & Helfer ================= */
 const CFG0 = { jail: "0 200 0", spawn: "0 100 0", minigame: "0 100 0", startCoins: 100, killReward: 25, bountyOnKill: 50 };
@@ -208,7 +209,7 @@ async function req(type, payload = {}) {
   const ref = await addDoc(collection(db, "requests"), { type, payload, uid: S.uid, status: "pending", createdAt: serverTimestamp() });
   const un = onSnapshot(ref, (d) => { const s = d.data(); if (s?.status === "done") { toast(s.result || "Erledigt", "ok"); un(); } if (s?.status === "error") { toast(s.result || "Fehler", "err"); un(); } });
   setTimeout(() => un(), 60000);
-  toast("Anfrage gesendet … wird verarbeitet, sobald ein Admin online ist.");
+  toast("Anfrage gesendet … das kann einen Moment dauern.");
 }
 const U = (id) => doc(db, "users", id);
 const addTx = (t, uid, amount, reason, type, after) => t.set(doc(collection(db, "tx")), { uid, amount, reason, type, balanceAfter: after, ts: serverTimestamp() });
@@ -312,6 +313,14 @@ async function drain() {
   }
   busy = false;
 }
+
+/* Zusätzliche Abfrage: holt offene Anfragen alle 3 s aktiv ab, falls der Live-Listener hängt oder gedrosselt wird */
+async function pollReq() {
+  if (!started || !isAdmin() || busy) return;
+  try { const s = await getDocs(query(collection(db, "requests"), where("status", "==", "pending"))); s.docs.forEach((d) => queue.push(d)); drain(); } catch {}
+}
+setInterval(pollReq, 3000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) pollReq(); });
 
 /* ================= Admin-Funktionen ================= */
 async function adjust(uid, delta, reason) {
@@ -620,7 +629,7 @@ function renderModal() {
   let body;
   if (p.phase === "done") body = `<svg class="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg><h2>Auftrag ausgeführt</h2><p class="lbl">${esc(p.title)} wurde geliefert. Viel Spaß!</p><button class="go" data-act="popClose">Super</button>`;
   else if (p.phase === "error") body = `<div class="bad-x">✕</div><h2>Kauf fehlgeschlagen</h2><p class="lbl">${esc(p.msg)}</p><button data-act="popClose">Schließen</button>`;
-  else body = `<div class="ring" style="--p:${(left / 60) * 100}"><span>${left}</span></div><h2>Auftrag wird ausgeführt</h2><b>${esc(p.title)}</b>${left === 0 ? `<p class="lbl">Das dauert etwas länger. Dein Auftrag bleibt offen, den Status siehst du im Shop unter „Meine Aufträge“.</p><button data-act="popClose">Schließen</button>` : `<p class="lbl">Ein Admin liefert dein Item im Spiel.</p>`}`;
+  else body = `<div class="ring" style="--p:${(left / 60) * 100}"><span>${left}</span></div><h2>Auftrag wird ausgeführt</h2><b>${esc(p.title)}</b>${left === 0 ? `<p class="lbl">Das dauert etwas länger. Dein Auftrag bleibt offen, den Status siehst du im Shop unter „Meine Aufträge“.</p><button data-act="popClose">Schließen</button>` : `<p class="lbl">Das passiert automatisch und kann einen Moment dauern.</p>`}`;
   m.innerHTML = `<div class="overlay"><div class="card sheet" role="dialog" aria-live="polite">${body}</div></div>`;
 }
 setInterval(() => { if (S.pop?.phase === "wait") renderModal(); }, 1000);
