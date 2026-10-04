@@ -2,640 +2,110 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Realm Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop-Start</title>
 <style>
-:root{--ink:#f5f7ff;--mute:rgba(235,240,255,.68);--green:#4ade80;--gold:#fbbf24;--red:#fb7185;--aqua:#67e8f9;--r:22px}
 *{box-sizing:border-box}
-html{background:#1b2146}
-body{margin:0;color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100vh}
-#bg{position:fixed;inset:0;z-index:-1}#bg svg{width:100%;height:100%;display:block}
-h1,h2,h3{margin:0 0 .7rem;font-weight:650;letter-spacing:-.01em}h1{font-size:1.5rem}h2{font-size:1.35rem}
-h3{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mute)}
-.card,.glass,nav,header.topbar{background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,.04) 55%),rgba(16,20,40,.42);-webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
-  border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.06),0 14px 40px rgba(0,0,0,.35)}
-.card{border-radius:var(--r);padding:1rem;margin-bottom:.9rem}
-button,input,select,textarea{font:inherit;color:inherit}
-input,select,textarea{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:.6rem .8rem;-webkit-appearance:none;appearance:none}
-select{background-image:linear-gradient(45deg,transparent 50%,#fff 50%),linear-gradient(135deg,#fff 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:2rem}
-option{color:#111}textarea{min-height:90px}input::placeholder{color:var(--mute)}
-button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:.5rem 1rem;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:transform .12s,background .12s}
-button:hover{background:rgba(255,255,255,.24)}button:active{transform:scale(.97)}
-button:disabled{opacity:.45;cursor:not-allowed}
-button.go{background:rgba(74,222,128,.32);border-color:rgba(134,239,172,.65)}button.go:hover{background:rgba(74,222,128,.48)}
-button.bad{background:rgba(251,113,133,.30);border-color:rgba(253,164,175,.6)}
-button.sm{padding:.2rem .65rem;font-size:.85rem}
-:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}
-label{display:block;color:var(--mute);font-size:.85rem;margin:.6rem 0 .25rem}
-#app{display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto 1fr;gap:14px;padding:14px;min-height:100vh}
-header.topbar{grid-column:1/-1;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:.6rem 1.1rem;border-radius:999px}
-.brand{font-weight:700}.timer{font-weight:650;color:var(--gold)}.timer small{color:#fff;font-weight:400;margin-right:.5rem}
-nav{border-radius:var(--r);padding:.7rem;display:flex;flex-direction:column;gap:.3rem;align-self:start;position:sticky;top:14px}
-nav button{text-align:left;border-color:transparent;background:transparent;box-shadow:none;border-radius:14px}
-nav button.on{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.35)}
-nav .grp{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin:.7rem .4rem .1rem}
-main{min-width:0}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:.9rem}
-.qgrid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:.9rem;align-items:start}
-.row{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
-.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
-.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:.25rem .8rem;border-radius:999px;font-weight:650}
-.coins{font-weight:700;color:var(--gold)}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:middle}th{color:var(--mute);font-weight:500;font-size:.8rem}
-.pos{color:var(--green)}.neg{color:var(--red)}.lbl{color:var(--mute)}.empty{color:var(--mute)}.scroll{overflow-x:auto}
-.tag{display:inline-block;padding:0 .55rem;border-radius:999px;font-size:.78rem;border:1px solid rgba(255,255,255,.3)}.tag.r{border-color:var(--red);color:var(--red)}.tag.g{border-color:var(--green);color:var(--green)}.tag.y{border-color:var(--gold);color:var(--gold)}
-/* Banking */
-.accounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.9rem;margin-bottom:.9rem}
-.acct{display:flex;flex-direction:column;gap:.2rem;text-align:left;padding:1.2rem 1.3rem;border-radius:26px;min-height:150px;justify-content:space-between;color:var(--ink);border:1px solid rgba(255,255,255,.3)}
-.acct.me{background:linear-gradient(135deg,rgba(74,222,128,.42),rgba(16,20,40,.35))}.acct.team{background:linear-gradient(135deg,rgba(251,191,36,.42),rgba(16,20,40,.35))}
-.acct.ghost{background:rgba(255,255,255,.07);border-style:dashed;cursor:default}.acct.sel{outline:2px solid rgba(255,255,255,.7);outline-offset:2px}
-.acct .big{font-size:2.3rem;font-weight:700;letter-spacing:-.02em}.acct .meta{color:var(--mute);font-size:.88rem}
-.seg{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;gap:2px;margin-bottom:.4rem}
-.seg button{border:0;background:transparent;box-shadow:none}.seg button.on{background:rgba(255,255,255,.28)}
-.tx{display:grid;grid-template-columns:36px 1fr auto;gap:.7rem;align-items:center;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.1)}
-.tx:last-child{border:0}.tx small{display:block;color:var(--mute)}
-.dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700}.dot.p{background:rgba(74,222,128,.25);color:var(--green)}.dot.n{background:rgba(251,113,133,.22);color:var(--red)}
-/* Shop */
-.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.9rem;margin-bottom:.9rem}
-.item{display:flex;flex-direction:column;gap:.4rem;margin:0}.item .cat{color:var(--mute);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}.item .price{color:var(--gold);font-weight:700;font-size:1.2rem}
-/* Aufträge */
-.order{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);border-left:4px solid var(--gold);border-radius:18px;padding:.8rem;margin-bottom:.7rem}
-.order .oh{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;margin-bottom:.2rem}
-.cmd{display:flex;gap:.4rem;align-items:center;margin:.35rem 0}
-code{flex:1;background:rgba(0,0,0,.4);color:#86efac;padding:.35rem .6rem;border-radius:12px;font:14px ui-monospace,Menlo,monospace;word-break:break-all}
-/* Schnellansicht kompakt */
-.compact{padding:.65rem .75rem;border-radius:18px;margin-bottom:.6rem}.compact h3{margin-bottom:.4rem}
-.compact select,.compact input{padding:.3rem .55rem;font-size:.9rem;border-radius:10px}
-.drow{display:flex;gap:.35rem;align-items:center;margin-bottom:.35rem}.drow select{flex:1;min-width:0}.drow span{color:var(--mute)}
-.chk{display:flex;align-items:center;gap:.3rem;margin:0;white-space:nowrap;font-size:.85rem}.chk input{width:auto}.tiny{width:64px!important}
-.pl{border-bottom:1px solid rgba(255,255,255,.1)}.pn{display:flex;justify-content:space-between;width:100%;border:0;background:transparent;box-shadow:none;border-radius:10px;padding:.35rem .4rem;font-size:.95rem}.pn small{color:var(--gold)}
-.chips{display:flex;flex-wrap:wrap;gap:.25rem;padding:.2rem .2rem .5rem}.chip{padding:.1rem .55rem;font-size:.8rem}
-.warn{border-left:4px solid var(--red)}
-.bar{height:12px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden;margin:.2rem 0 .5rem}.bar i{display:block;height:100%;background:var(--green)}
-/* Kauf-Popup */
-.overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(5,8,20,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);z-index:20;animation:fade .2s}
-.sheet{width:min(360px,90vw);border-radius:30px;padding:1.6rem;text-align:center;display:grid;gap:.6rem;justify-items:center;animation:pop .25s}
-.ring{width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p)*1%),rgba(255,255,255,.15) 0);display:grid;place-items:center}
-.ring span{width:106px;height:106px;border-radius:50%;background:rgba(14,18,36,.85);display:grid;place-items:center;font-size:2.6rem;font-weight:700}
-.check{width:96px;height:96px}.check circle{fill:rgba(74,222,128,.2);stroke:var(--green);stroke-width:3;stroke-dasharray:152;stroke-dashoffset:152;animation:draw .5s forwards}
-.check path{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .4s .4s forwards}
-.bad-x{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;font-size:2rem;background:rgba(251,113,133,.25);color:var(--red)}
-@keyframes draw{to{stroke-dashoffset:0}}@keyframes fade{from{opacity:0}}@keyframes pop{from{transform:scale(.9);opacity:0}}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom));display:grid;gap:.4rem;z-index:30}
-#toast div{background:rgba(16,20,40,.8);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.3);padding:.55rem 1rem;border-radius:999px;max-width:90vw}#toast .ok{border-color:var(--green)}#toast .err{border-color:var(--red)}
-.login{max-width:430px;margin:9vh auto;padding:1.4rem;border-radius:28px}
-@media (max-width:860px){
-  #app{grid-template-columns:1fr;padding:10px;padding-bottom:84px}.qgrid{grid-template-columns:1fr}
-  nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));top:auto;flex-direction:row;overflow-x:auto;border-radius:999px;z-index:10;padding:.4rem}
-  nav .grp{display:none}nav button{white-space:nowrap}header.topbar{border-radius:22px}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-/* HINTERGRUNDFOTO: Entweder die Bilddatei als "bg.jpg" neben diese Datei legen,
-   oder diese ganze #bg-Zeile durch deine alte Zeile "#bg{background:#10162c url(data:image/jpeg;base64,...) center/cover no-repeat}" ersetzen. */
-#bg{background:url(bg.jpg) center/cover no-repeat,radial-gradient(circle at 20% 10%,#33428f,#1b2146 45%,#10162c 80%) center/cover no-repeat}
-#bg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(8,12,28,.15),rgba(8,12,28,.5))}
-/* Bedienung: größere Ziele, klare Navigation */
-button{min-height:42px}button.sm{min-height:34px}
-nav button{display:flex;align-items:center;gap:.75rem;min-height:48px;font-size:1.02rem}
-nav .ic{font-size:1.3rem;width:1.7rem;text-align:center}
-.ptitle{margin:0 0 .9rem}
-.tabs{display:flex;gap:.4rem;overflow-x:auto;margin-bottom:.9rem;padding-bottom:2px}.tabs button{white-space:nowrap}.tabs button.on{background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.5)}
-.badge{background:var(--red);border-radius:99px;padding:0 .45rem;font-size:.75rem;margin-left:.2rem}
-.hint{font-size:.82rem;margin:0 0 .4rem}
-.order button.go{width:100%;margin-top:.4rem;font-weight:650}
-@media (max-width:860px){nav button{flex-direction:column;gap:0;font-size:.7rem;min-height:54px;padding:.3rem .8rem}nav .ic{font-size:1.25rem}}
+body{margin:0;min-height:100vh;color:#f5f7ff;font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;background:radial-gradient(circle at 20% 10%,#f08a5d 0,transparent 35%),linear-gradient(160deg,#1c2452,#3b2f6b 60%,#12182f);padding:20px}
+.card{max-width:560px;margin:6vh auto;padding:1.4rem;border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,.04)),rgba(16,20,40,.5);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 14px 40px rgba(0,0,0,.4)}
+h1{margin:0 0 .5rem;font-size:1.5rem}p{margin:.5rem 0}.lbl{color:rgba(235,240,255,.7)}
+label{display:block;margin:.7rem 0 .25rem;color:rgba(235,240,255,.7);font-size:.9rem}
+input{width:100%;padding:.65rem .85rem;border-radius:14px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:inherit;font:inherit}
+button{margin-top:.9rem;min-height:46px;padding:.5rem 1.3rem;border-radius:999px;border:1px solid rgba(134,239,172,.65);background:rgba(74,222,128,.34);color:inherit;font:inherit;font-weight:650;cursor:pointer}
+button.big{width:100%;min-height:58px;font-size:1.15rem}button.gray{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.14)}button:disabled{opacity:.5}
+.msg{margin-top:.8rem;padding:.6rem .9rem;border-radius:14px;background:rgba(255,255,255,.1)}.msg.err{color:#fb7185}.msg.ok{color:#4ade80}
+details{margin-top:.8rem}summary{cursor:pointer;color:rgba(235,240,255,.8)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.5rem}td,th{text-align:left;padding:.25rem .3rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.bar{height:12px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;margin-top:.8rem}.bar i{display:block;height:100%;width:0;background:#4ade80;transition:width .3s}
+.hide{display:none}
 </style>
 </head>
 <body>
-<div id="bg"></div><div id="root"></div><div id="modal"></div><div id="toast" aria-live="polite"></div>
+<div class="card" id="root"><h1>Shop-Start</h1><p class="lbl">Lade …</p></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { initializeFirestore, doc, collection, onSnapshot, addDoc, setDoc, updateDoc, deleteDoc, getDoc, getDocs, runTransaction, query, where, orderBy, limit, serverTimestamp, Timestamp }
-  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, getDocs, collection, writeBatch } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyAkOOgBdY5vrYlxNZq4F0YctNANTrbXdwQ", authDomain: "minecraft-virtuell.firebaseapp.com", projectId: "minecraft-virtuell",
   storageBucket: "minecraft-virtuell.firebasestorage.app", messagingSenderId: "931259543545", appId: "1:931259543545:web:5c4ef885305d8df7501728",
 });
-const auth = getAuth(app), db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+const auth = getAuth(app), db = getFirestore(app);
 
-/* ================= State & Helfer ================= */
-const CFG0 = { jail: "0 200 0", spawn: "0 100 0", minigame: "0 100 0", startCoins: 100, killReward: 25, bountyOnKill: 50 };
-const S = { fullTab: "", walTab: "me", sendFrom: "me", openUser: "", q: "", pop: null, editItem: "", teamTx: [], uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], state: null, vote: null, ballots: [], cfg: {} };
-let teamSeen, teamUn, unsubs = [], started = false, dirty = false, firstOrders = true, busy = false;
-const C = () => ({ ...CFG0, ...S.cfg });
-const $ = (s) => document.querySelector(s);
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const fmt = (n) => Number(n ?? 0).toLocaleString("de-DE");
-const rank = () => ({ player: 1, mod: 2, admin: 3 }[S.me?.role] ?? 0), isStaff = () => rank() >= 2, isAdmin = () => rank() >= 3;
-const active = () => S.users.filter((u) => u.status === "active").sort((a, b) => a.gamertag.localeCompare(b.gamertag));
-const uname = (id) => S.users.find((u) => u.id === id)?.gamertag ?? "?";
-const date = (t) => (t?.toDate ? t.toDate().toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" }) : "–");
-const byTime = (a, b) => (a.createdAt?.seconds ?? 9e12) - (b.createdAt?.seconds ?? 9e12);
-const q = (n) => `"${n}"`;
-const clean = (t) => String(t ?? "").replace(/[\r\n"\\]/g, " ").trim().slice(0, 100);
-const amt = (v) => { v = Math.floor(Number(v)); if (!(v > 0 && v <= 1e7)) throw Error("Ungültiger Betrag"); return v; };
-const NAME = /^[A-Za-z0-9_ ]{1,20}$/;
-const toast = (m, k = "") => { const d = document.createElement("div"); d.className = k; d.textContent = m; $("#toast").append(d); setTimeout(() => d.remove(), 4500); };
-const beep = () => { try { const a = new AudioContext(), o = a.createOscillator(); o.frequency.value = 880; o.connect(a.destination); o.start(); setTimeout(() => { o.stop(); a.close(); }, 180); } catch {} };
-
-/* ================= Befehle (zum Kopieren) ================= */
-const CMD = {
-  freeze: (n) => [`/inputpermission set ${q(n)} movement disabled`, `/inputpermission set ${q(n)} jump disabled`],
-  unfreeze: (n) => [`/inputpermission set ${q(n)} movement enabled`, `/inputpermission set ${q(n)} jump enabled`],
-  jail: (n) => [`/tp ${q(n)} ${C().jail}`],
-  unjail: (n) => [`/tp ${q(n)} ${C().spawn}`],
-  ghost: (a, n) => [`/effect ${q(a)} invisibility 99999 1 true`, `/tp ${q(a)} ${q(n)}`],
-  unghost: (a) => [`/effect ${q(a)} clear`],
-  warn: (n, r) => [`/tellraw ${q(n)} {"rawtext":[{"text":"§eVerwarnung: ${r}"}]}`],
-  kick: (n, r) => [`/kick ${q(n)} ${r}`],
+/* ===== Die 50 Artikel: [Name, Preis, Lagerbestand, Minecraft-ID, Anzahl, (optional: Datenwert)] ===== */
+const CATS = {
+  "Waffen & Werkzeuge": [
+    ["Netheriteschwert", 600, 1, "netherite_sword", 1], ["Diamantschwert", 200, 5, "diamond_sword", 1], ["Netheritespitzhacke", 700, 1, "netherite_pickaxe", 1],
+    ["Diamantspitzhacke", 250, 5, "diamond_pickaxe", 1], ["Bogen", 80, 15, "bow", 1], ["Armbrust", 100, 15, "crossbow", 1], ["Dreizack", 400, 3, "trident", 1],
+    ["Schild", 50, 20, "shield", 1], ["Netheriteaxt", 650, 1, "netherite_axe", 1], ["Diamantaxt", 220, 5, "diamond_axe", 1]],
+  "Rüstung": [
+    ["Elytra", 1500, 2, "elytra", 1], ["Netheritehelm", 550, 2, "netherite_helmet", 1], ["Netheriteharnisch", 900, 2, "netherite_chestplate", 1],
+    ["Netheritehose", 800, 2, "netherite_leggings", 1], ["Netheritestiefel", 500, 2, "netherite_boots", 1], ["Diamanthelm", 180, 8, "diamond_helmet", 1],
+    ["Diamantharnisch", 350, 8, "diamond_chestplate", 1], ["Diamanthose", 300, 8, "diamond_leggings", 1], ["Diamantstiefel", 180, 8, "diamond_boots", 1]],
+  "Konsumgüter & Kampf-Items": [
+    ["Verzauberter goldener Apfel (Notgott)", 350, 5, "enchanted_golden_apple", 1], ["Goldener Apfel (10er-Pack)", 120, 20, "golden_apple", 10],
+    ["Enderperlen (30er-Pack)", 150, 30, "ender_pearl", 30], ["Totem der Unsterblichkeit", 500, 4, "totem_of_undying", 1],
+    ["Gekochtes Rindfleisch (Stack / 64)", 30, 50, "cooked_beef", 64], ["Goldene Karotten (32er-Pack)", 90, 30, "golden_carrot", 32],
+    ["Erfahrungsfläschchen (32er-Pack)", 75, 25, "experience_bottle", 32], ["Feuerwerksraketen für Elytra (Stack / 64)", 100, 40, "firework_rocket", 64],
+    ["Wassereimer", 25, 99, "water_bucket", 1], ["Lavaeimer", 40, 50, "lava_bucket", 1]],
+  "Ressourcen & Blöcke": [
+    ["Obsidian (Stack / 64)", 150, 30, "obsidian", 64], ["Netheritbarren (4er-Pack)", 800, 2, "netherite_ingot", 4], ["Diamantblock (16er-Pack)", 450, 10, "diamond_block", 16],
+    ["Eisenblock (Stack / 64)", 120, 40, "iron_block", 64], ["Goldblock (Stack / 64)", 180, 30, "gold_block", 64], ["Smaragdblock (16er-Pack)", 200, 15, "emerald_block", 16],
+    ["TNT (16er-Pack)", 110, 25, "tnt", 16], ["Leuchtfeuer (Beacon)", 1000, 1, "beacon", 1], ["Endkristall (4er-Pack)", 250, 10, "end_crystal", 4],
+    ["Spinnennetz (16er-Pack)", 60, 30, "web", 16]],
+  "Gadgets & Sonstiges": [
+    ["Sattel", 70, 15, "saddle", 1], ["Namensschild", 40, 20, "name_tag", 1], ["Wither-Skelett-Schädel", 300, 5, "skull", 1, 1], ["Drachenkopf", 750, 2, "dragon_head", 1],
+    ["Schleimball (32er-Pack)", 50, 30, "slime_ball", 32], ["Feuerzeug (Flint and Steel)", 20, 99, "flint_and_steel", 1], ["Musikbox (Jukebox)", 90, 10, "jukebox", 1],
+    ["Schallplatte (Pigstep)", 200, 5, "music_disc_pigstep", 1], ["Kürbis", 15, 99, "pumpkin", 1], ["Leine (5er-Pack)", 30, 40, "lead", 5],
+    ["Namensschild (3er-Pack)", 100, 15, "name_tag", 3]],
 };
-const PH = {
-  peace: { label: "Friedlich", cmds: () => ["/gamerule pvp false", "/title @a title §aFriedliche Phase"] },
-  pvp: { label: "PVP", cmds: () => ["/gamerule pvp true", "/title @a title §cPVP aktiv!"] },
-  hearts: { label: "Herz-Phase", cmds: () => ["/gamerule pvp true", "/gamemode survival @a", "/scoreboard objectives add hearts dummy Herzen", "/scoreboard objectives setdisplay belowname hearts", "/scoreboard players set @a hearts 3", "/title @a title §4Herz-Phase", "/title @a subtitle §7Jeder hat 3 Herzen"] },
-};
-const order = (title, commands, note = "") => addDoc(collection(db, "orders"), { kind: "staff", title, commands, note, uid: S.uid, gamertag: S.me.gamertag, status: "open", createdAt: serverTimestamp() });
+const slug = (t) => t.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const ITEMS = Object.entries(CATS).flatMap(([category, list]) => list.map(([name, price, stock, id, n, aux]) => ({
+  docId: slug(name), name, price, stock, category, commands: [`/give {player} ${id} ${n}${aux !== undefined ? " " + aux : ""}`], active: true })));
 
-/* ================= Auth ================= */
-const slug = (g) => g.toLowerCase().replace(/[^a-z0-9]+/g, "_");
-const mail = (g) => `${slug(g)}@realm-control.app`;
-let meUnsub = null;
-onAuthStateChanged(auth, (u) => {
-  meUnsub?.(); stop();
-  if (!u) { S.uid = null; S.me = null; render(true); return; }
-  S.uid = u.uid;
-  meUnsub = onSnapshot(doc(db, "users", u.uid), (d) => {
-    S.me = d.exists() ? { id: d.id, ...d.data() } : null;
-    if ((S.me?.teamId ?? null) !== teamSeen) { teamSeen = S.me?.teamId ?? null; listenTeamTx(); }
-    if (S.me?.status === "active" && !started) { started = true; if (isStaff()) S.view = "quick"; else S.view = "wallet"; listen(); }
-    render(true);
-  });
-});
-function stop() { unsubs.forEach((f) => f()); unsubs = []; started = false; teamUn?.(); teamUn = null; teamSeen = undefined; }
+const $ = (s) => document.querySelector(s), root = $("#root");
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const mail = (g) => `${g.toLowerCase().replace(/[^a-z0-9]+/g, "_")}@realm-control.app`;
 
-function listen() {
-  const on = (ref, fn) => unsubs.push(onSnapshot(ref, (s) => { fn(s); render(); }, (e) => console.warn(e.code)));
-  const list = (s) => s.docs.map((d) => ({ id: d.id, ...d.data() }));
-  const col = (n) => collection(db, n);
-  on(col("users"), (s) => (S.users = list(s)));
-  on(query(col("tx"), where("uid", "==", S.uid)), (s) => (S.tx = list(s).sort((a, b) => (b.ts?.seconds ?? 9e12) - (a.ts?.seconds ?? 9e12)).slice(0, 40)));
-  on(col("teams"), (s) => (S.teams = list(s)));
-  on(col("shop_items"), (s) => (S.shop = list(s)));
-  on(query(col("punishments"), where("active", "==", true)), (s) => (S.pun = list(s)));
-  on(query(col("bounties"), where("active", "==", true)), (s) => (S.bounties = list(s)));
-  on(query(col("orders"), where("uid", "==", S.uid)), (s) => { S.myOrders = list(s).sort(byTime).reverse(); checkPop(); });
-  on(doc(db, "events", "state"), (d) => (S.state = d.data() ?? null));
-  on(doc(db, "events", "vote"), (d) => (S.vote = d.data() ?? null));
-  on(col("events/vote/ballots"), (s) => (S.ballots = list(s)));
-  if (isStaff()) {
-    on(doc(db, "settings", "config"), (d) => (S.cfg = d.data() ?? {}));
-    on(query(col("reports"), orderBy("createdAt", "desc"), limit(40)), (s) => (S.reports = list(s)));
-    on(query(col("orders"), orderBy("createdAt", "desc"), limit(80)), (s) => {
-      const before = S.orders.filter((o) => o.status === "open").length;
-      S.orders = list(s);
-      const now = S.orders.filter((o) => o.status === "open").length;
-      if (!firstOrders && now > before) beep();
-      firstOrders = false;
-    });
+function loginView(msg = "") {
+  root.innerHTML = `<h1>Shop-Start</h1><p class="lbl">Melde dich als Admin an, dann legst du alle ${ITEMS.length} Artikel mit einem Klick an.</p>
+    <form id="f"><label for="g">Gamertag</label><input id="g" autocomplete="username" required><label for="p">Passwort</label><input id="p" type="password" autocomplete="current-password" required>
+    <button class="big">Anmelden</button></form>${msg ? `<div class="msg err">${esc(msg)}</div>` : ""}`;
+  $("#f").onsubmit = async (e) => {
+    e.preventDefault();
+    try { await signInWithEmailAndPassword(auth, mail($("#g").value.trim()), $("#p").value); }
+    catch (x) { loginView({ "auth/invalid-credential": "Gamertag oder Passwort falsch." }[x.code] ?? x.message); }
+  };
+}
+
+async function panel(user) {
+  const me = (await getDoc(doc(db, "users", user.uid))).data();
+  if (me?.role !== "admin" || me?.status !== "active") {
+    root.innerHTML = `<h1>Shop-Start</h1><div class="msg err">Nur Admins dürfen das. Du bist als „${esc(me?.gamertag ?? "?")}“ angemeldet.</div><button class="gray" id="o">Abmelden</button>`;
+    $("#o").onclick = () => signOut(auth); return;
   }
-  if (isAdmin()) on(query(col("requests"), where("status", "==", "pending")), (s) => s.docs.forEach((d) => queue.push(d)) || drain());
-}
-
-/* ================= Anfragen der Spieler → Verarbeitung im Admin-Browser ================= */
-async function req(type, payload = {}) {
-  const ref = await addDoc(collection(db, "requests"), { type, payload, uid: S.uid, status: "pending", createdAt: serverTimestamp() });
-  const un = onSnapshot(ref, (d) => { const s = d.data(); if (s?.status === "done") { toast(s.result || "Erledigt", "ok"); un(); } if (s?.status === "error") { toast(s.result || "Fehler", "err"); un(); } });
-  setTimeout(() => un(), 60000);
-  toast("Anfrage gesendet … das kann einen Moment dauern.");
-}
-const U = (id) => doc(db, "users", id);
-const addTx = (t, uid, amount, reason, type, after) => t.set(doc(collection(db, "tx")), { uid, amount, reason, type, balanceAfter: after, ts: serverTimestamp() });
-
-const addTeamTx = (t, teamId, amount, reason, by, after) => t.set(doc(collection(db, "tx")), { teamId, uid: null, amount, reason, by, type: "team", balanceAfter: after, ts: serverTimestamp() });
-const H = {
-  async transfer(r) {
-    const a = amt(r.payload.amount), from = r.payload.from; let to = r.payload.to;
-    if (!["me", "team"].includes(from)) throw Error("Ungültiges Konto");
-    if (to === r.uid) to = "me";
-    if (from === to) throw Error("Wähle zwei verschiedene Konten");
-    return runTransaction(db, async (t) => {
-      const us = await t.get(U(r.uid)), me = us.data(), tid = me.teamId;
-      if ((from === "team" || to === "team") && !tid) throw Error("Du bist in keinem Team");
-      const tref = tid ? doc(db, "teams", tid) : null, ts = tref ? await t.get(tref) : null;
-      const toUser = !["me", "team"].includes(to), rs = toUser ? await t.get(U(to)) : null;
-      if (toUser && (!rs.exists() || rs.data().status !== "active")) throw Error("Empfänger unbekannt");
-      let bal = me.balance, vault = ts?.data().vault ?? 0, rbal = rs?.data().balance ?? 0;
-      if ((from === "me" ? bal : vault) < a) throw Error("Nicht genug Guthaben");
-      if (from === "me") bal -= a; else vault -= a;
-      if (to === "me") bal += a; else if (to === "team") vault += a; else rbal += a;
-      t.update(U(r.uid), { balance: bal }); if (tref) t.update(tref, { vault }); if (toUser) t.update(U(to), { balance: rbal });
-      const rn = toUser ? rs.data().gamertag : null;
-      const log = (acc, amount, reason) => (acc === "me" ? addTx(t, r.uid, amount, reason, "transfer", bal) : addTeamTx(t, tid, amount, reason, me.gamertag, vault));
-      log(from, -a, toUser ? `Überweisung an ${rn}` : `Umbuchung auf ${to === "me" ? "Mein Konto" : "Team-Konto"}`);
-      if (toUser) addTx(t, to, a, `Überweisung von ${me.gamertag}${from === "team" ? " (Team-Konto)" : ""}`, "transfer", rbal);
-      else log(to, a, `Umbuchung von ${from === "me" ? "Mein Konto" : "Team-Konto"}`);
-      return toUser ? `${a} Coins an ${rn} gesendet` : "Umgebucht";
-    });
-  },
-  async bounty(r) {
-    const a = amt(r.payload.amount), tg = r.payload.target;
-    if (tg === r.uid) throw Error("Kein Kopfgeld auf dich selbst");
-    return runTransaction(db, async (t) => {
-      const [us, ts] = [await t.get(U(r.uid)), await t.get(U(tg))];
-      if (!ts.exists()) throw Error("Ziel unbekannt");
-      if (us.data().teamId && us.data().teamId === ts.data().teamId) throw Error("Kein Kopfgeld auf dein Teammitglied");
-      const b = us.data().balance; if (b < a) throw Error("Nicht genug Coins");
-      t.update(U(r.uid), { balance: b - a }); addTx(t, r.uid, -a, `Kopfgeld auf ${ts.data().gamertag}`, "bounty", b - a);
-      t.set(doc(collection(db, "bounties")), { target: tg, targetName: ts.data().gamertag, placedBy: us.data().gamertag, amount: a, active: true, createdAt: serverTimestamp() });
-      return `Kopfgeld von ${a} Coins auf ${ts.data().gamertag}`;
-    });
-  },
-  async buy(r) {
-    const oref = doc(collection(db, "orders"));
-    const msg = await runTransaction(db, async (t) => {
-      const [us, it] = [await t.get(U(r.uid)), await t.get(doc(db, "shop_items", String(r.payload.itemId)))];
-      if (!it.exists() || !it.data().active) throw Error("Artikel nicht verfügbar");
-      const d = it.data(), b = us.data().balance, p = d.price; if (b < p) throw Error("Nicht genug Coins");
-      if (d.refill > 0 && (d.stock ?? 0) <= 0) throw Error("Ausverkauft");
-      const g = us.data().gamertag;
-      t.update(U(r.uid), { balance: b - p }); addTx(t, r.uid, -p, `Shop: ${d.name}`, "shop", b - p);
-      if (d.refill > 0) t.update(it.ref, { stock: (d.stock ?? 0) - 1 });
-      t.set(oref, { kind: "shop", title: `Kauf: ${d.name}`, gamertag: g, uid: r.uid, commands: (d.commands ?? []).map((c) => c.replaceAll("{player}", q(g))), note: "", status: "open", createdAt: serverTimestamp() });
-      return `${d.name} gekauft`;
-    });
-    return { msg, orderId: oref.id };
-  },
-  async kill(r) {
-    if (!["mod", "admin"].includes(r.role)) throw Error("Keine Berechtigung");
-    const { victim, killer, bountyAmount } = r.payload, cf = C();
-    const bs = killer ? (await getDocs(query(collection(db, "bounties"), where("target", "==", victim), where("active", "==", true)))).docs : [];
-    return runTransaction(db, async (t) => {
-      const vs = await t.get(U(victim)), ks = killer ? await t.get(U(killer)) : null;
-      const st = (await t.get(doc(db, "events", "state"))).data(), hp = st?.phase === "hearts";
-      const live = []; for (const b of bs) { const s = await t.get(b.ref); if (s.exists() && s.data().active) live.push(s); }
-      const total = live.reduce((x, s) => x + s.data().amount, 0);
-      if (hp) {
-        const left = Math.max(0, (vs.data().hearts ?? 3) - 1), vn = vs.data().gamertag;
-        t.update(U(victim), { deaths: (vs.data().deaths ?? 0) + 1, hearts: left });
-        t.set(doc(collection(db, "orders")), { kind: "staff", title: left ? `Herz verloren: ${vn} (noch ${left})` : `Ausgeschieden: ${vn}`, gamertag: r.gamertag, uid: r.uid, status: "open", createdAt: serverTimestamp(), note: "",
-          commands: [`/scoreboard players set ${q(vn)} hearts ${left}`, ...(left ? [] : [`/gamemode spectator ${q(vn)}`, `/title ${q(vn)} title §cAusgeschieden`])] });
-      } else t.update(U(victim), { deaths: (vs.data().deaths ?? 0) + 1 });
-      if (killer) {
-        const bal = ks.data().balance + cf.killReward + total;
-        t.update(U(killer), { kills: (ks.data().kills ?? 0) + 1, balance: bal });
-        addTx(t, killer, cf.killReward, `Kill: ${vs.data().gamertag}`, "kill", ks.data().balance + cf.killReward);
-        if (total) addTx(t, killer, total, `Kopfgeld auf ${vs.data().gamertag}`, "bounty", bal);
-        live.forEach((s) => t.update(s.ref, { active: false, claimedBy: ks.data().gamertag }));
-        if (bountyAmount > 0) t.set(doc(collection(db, "bounties")), { target: killer, targetName: ks.data().gamertag, placedBy: "Server", amount: bountyAmount, active: true, createdAt: serverTimestamp() });
-      }
-      t.set(doc(collection(db, "kills")), { victim, victimName: vs.data().gamertag, killer: killer || null, killerName: ks?.data().gamertag ?? null, by: r.gamertag, createdAt: serverTimestamp() });
-      return killer ? `${vs.data().gamertag} wurde von ${ks.data().gamertag} getötet${total ? ` (Kopfgeld ${total})` : ""}` : `${vs.data().gamertag} ist gestorben`;
-    });
-  },
-};
-const queue = [];
-async function drain() {
-  if (busy) return; busy = true;
-  while (queue.length) {
-    const d = queue.shift(), ref = d.ref;
+  const existing = (await getDocs(collection(db, "shop_items"))).size;
+  root.innerHTML = `<h1>Shop-Start</h1><p>Angemeldet als <b>${esc(me.gamertag)}</b>.</p>
+    <p class="lbl">Im Shop sind aktuell <b>${existing}</b> Artikel. Jetzt anlegen: <b>${ITEMS.length}</b> Artikel in ${Object.keys(CATS).length} Kategorien, jeweils mit Preis, Lagerbestand und Befehl.</p>
+    ${existing ? `<div class="msg">Gleiche Artikel werden überschrieben (Lagerbestand springt auf den Startwert zurück). Andere Artikel bleiben bestehen.</div>` : ""}
+    <button class="big" id="go">Start – alle ${ITEMS.length} Artikel anlegen</button><div class="bar"><i id="pr"></i></div><div id="out"></div>
+    <details><summary>Alle Artikel ansehen</summary><table><tr><th>Artikel</th><th>Preis</th><th>Lager</th><th>Befehl</th></tr>${ITEMS.map((i) => `<tr><td>${esc(i.name)}</td><td>${i.price}</td><td>${i.stock}</td><td>${esc(i.commands[0])}</td></tr>`).join("")}</table></details>
+    <p><button class="gray" id="o">Abmelden</button></p>`;
+  $("#o").onclick = () => signOut(auth);
+  $("#go").onclick = async () => {
+    const b = $("#go"); b.disabled = true; b.textContent = "Wird angelegt …"; $("#pr").style.width = "30%";
     try {
-      await runTransaction(db, async (t) => { const s = await t.get(ref); if (s.data().status !== "pending") throw Error("skip"); t.update(ref, { status: "processing" }); });
-    } catch { continue; }
-    try {
-      const r = d.data(), ru = (await getDoc(U(r.uid))).data();
-      if (!ru || ru.status !== "active" || !H[r.type]) throw Error("Ungültige Anfrage");
-      const res = await H[r.type]({ ...r, role: ru.role, gamertag: ru.gamertag });
-      await updateDoc(ref, { status: "done", result: res.msg ?? res, orderId: res.orderId ?? null });
-    } catch (e) { await updateDoc(ref, { status: "error", result: e.message }).catch(() => {}); }
-  }
-  busy = false;
+      const batch = writeBatch(db);
+      ITEMS.forEach(({ docId, ...data }) => batch.set(doc(db, "shop_items", docId), data));
+      await batch.commit();
+      $("#pr").style.width = "100%";
+      $("#out").innerHTML = `<div class="msg ok">✓ Fertig! ${ITEMS.length} Artikel sind im Shop. <a href="./" style="color:#fff">Zum Dashboard</a></div>`;
+      b.textContent = "Erledigt";
+    } catch (e) { $("#pr").style.width = "0"; $("#out").innerHTML = `<div class="msg err">Fehler: ${esc(e.message)}</div>`; b.disabled = false; b.textContent = "Nochmal versuchen"; }
+  };
 }
-
-/* Zusätzliche Abfrage: holt offene Anfragen alle 3 s aktiv ab, falls der Live-Listener hängt oder gedrosselt wird */
-async function pollReq() {
-  if (!started || !isAdmin() || busy) return;
-  try { const s = await getDocs(query(collection(db, "requests"), where("status", "==", "pending"))); s.docs.forEach((d) => queue.push(d)); drain(); } catch {}
-}
-setInterval(pollReq, 3000);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) pollReq(); });
-
-/* ================= Admin-Funktionen ================= */
-async function adjust(uid, delta, reason) {
-  await runTransaction(db, async (t) => {
-    const s = await t.get(U(uid)), b = s.data().balance;
-    if (b + delta < 0) throw Error("Guthaben würde negativ");
-    t.update(U(uid), { balance: b + delta }); addTx(t, uid, delta, reason, "admin", b + delta);
-  });
-}
-async function approve(uid) {
-  const a = Number(C().startCoins) || 0;
-  await updateDoc(U(uid), { status: "active" });
-  if (a) await adjust(uid, a, "Startguthaben");
-}
-async function setPhase(phase, min, next) {
-  if (phase === "hearts") await Promise.all(active().map((u) => updateDoc(U(u.id), { hearts: 3 })));
-  const ph = PH[phase];
-  await setDoc(doc(db, "events", "state"), { phase, label: ph.label, endsAt: min ? Timestamp.fromMillis(Date.now() + min * 60000) : null, next: next || null });
-  await order(`Phase: ${ph.label}`, ph.cmds());
-}
-
-/* ================= Views ================= */
-const userOpts = (sel = "", skipMe = false) => active().filter((u) => !(skipMe && u.id === S.uid)).map((u) => `<option value="${u.id}" ${u.id === sel ? "selected" : ""}>${esc(u.gamertag)}</option>`).join("");
-
-function orderCard(o) {
-  return `<div class="order"><div class="oh"><b>${esc(o.title)}</b><span class="lbl">${esc(o.gamertag ?? "")} · ${date(o.createdAt)}</span></div>${o.note ? `<div class="lbl">${esc(o.note)}</div>` : ""}
-    ${(o.commands ?? []).map((c) => `<div class="cmd"><code>${esc(c)}</code><button class="sm" data-act="copy" data-t="${esc(c)}">Kopieren</button></div>`).join("")}
-    <div class="row"><button class="sm" data-act="copyAll" data-id="${o.id}">Alle kopieren</button><button class="go" data-act="done" data-id="${o.id}">Fertig</button></div></div>`;
-}
-const pendingBox = () => { const p = S.users.filter((u) => u.status === "pending"); return isAdmin() && p.length ? `<div class="card warn"><h3>Neue Anmeldungen (${p.length})</h3>${p.map((u) => `<div class="row" style="margin:.3rem 0"><b>${esc(u.gamertag)}</b><button class="sm go" data-act="approve" data-id="${u.id}">Freischalten</button><button class="sm bad" data-act="reject" data-id="${u.id}">Ablehnen</button></div>`).join("")}</div>` : ""; };
-
-const V = {
-  /* ---------- Spieler ---------- */
-  wallet() {
-    const u = S.me, team = S.teams.find((x) => x.id === u.teamId), tab = S.walTab === "team" && team ? "team" : "me", from = S.sendFrom === "team" && team ? "team" : "me";
-    const kd = u.deaths ? (u.kills / u.deaths).toFixed(2) : u.kills ?? 0;
-    const others = active().filter((x) => x.id !== S.uid).map((x) => [x.id, x.gamertag]);
-    const dest = (from === "me" ? (team ? [["team", "Team-Konto"]] : []) : [["me", "Mein Konto"]]).concat(others);
-    const list = tab === "team" ? S.teamTx : S.tx;
-    return `<div class="topline"><h2>Wallet</h2></div>
-      <div class="accounts">
-        <button class="acct me ${tab === "me" ? "sel" : ""}" data-act="walTab" data-t="me"><span class="lbl">Mein Konto</span><span class="big">🪙 ${fmt(u.balance)}</span><span class="meta">${esc(u.gamertag)} · ${fmt(u.kills)} Kills · ${fmt(u.deaths)} Tode · K/D ${kd}${S.state?.phase === "hearts" ? " · ❤️ " + (u.hearts ?? 3) : ""}</span></button>
-        ${team ? `<button class="acct team ${tab === "team" ? "sel" : ""}" data-act="walTab" data-t="team"><span class="lbl">Team-Konto · ${esc(team.name)}</span><span class="big">🪙 ${fmt(team.vault)}</span><span class="meta">${team.members.map(uname).map(esc).join(" & ")}</span></button>`
-        : `<div class="acct ghost"><span class="lbl">Team-Konto</span><span class="meta">Du bist noch in keinem Team. Ein Admin legt Teams an.</span></div>`}
-      </div>
-      <form class="card" data-form="transfer"><h3>Überweisen</h3>
-        <div class="seg" role="group" aria-label="Von Konto"><button type="button" class="${from === "me" ? "on" : ""}" data-act="sendFrom" data-f="me">Von: Mein Konto</button>${team ? `<button type="button" class="${from === "team" ? "on" : ""}" data-act="sendFrom" data-f="team">Von: Team-Konto</button>` : ""}</div>
-        <input type="hidden" name="from" value="${from}">
-        <div class="cols"><div><label for="to">An</label><select id="to" name="to" required>${dest.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select></div>
-        <div><label for="am">Betrag</label><input id="am" name="amount" type="number" min="1" inputmode="numeric" required></div></div>
-        <p><button class="go">Senden</button></p></form>
-      <div class="card"><h3>Umsätze · ${tab === "team" ? "Team-Konto" : "Mein Konto"}</h3>${list.length ? list.map(txRow).join("") : `<p class="empty">Noch keine Buchungen.</p>`}</div>`;
-  },
-  bounty() {
-    const targets = active().filter((u) => u.id !== S.uid && (!S.me.teamId || u.teamId !== S.me.teamId)), sum = {};
-    S.bounties.forEach((b) => (sum[b.targetName] = (sum[b.targetName] ?? 0) + b.amount));
-    const top = Object.entries(sum).sort((a, b) => b[1] - a[1]);
-    return `<div class="cols"><form class="card" data-form="bounty"><h3>Kopfgeld aussetzen</h3><label for="bt">Ziel</label><select id="bt" name="target" required>${targets.map((u) => `<option value="${u.id}">${esc(u.gamertag)}</option>`).join("")}</select>
-      <label for="ba">Betrag</label><input id="ba" name="amount" type="number" min="1" required><p><button class="go">Aussetzen</button></p></form>
-      <div class="card"><h3>Aktive Kopfgelder</h3>${top.length ? `<table><tbody>${top.map(([n, a]) => `<tr><td>${esc(n)}</td><td class="pos">${fmt(a)} Coins</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Niemand ist ausgeschrieben.</p>`}</div></div>`;
-  },
-  shop() {
-    const items = S.shop.filter((i) => i.active).sort((a, b) => a.price - b.price);
-    return `<div class="topline"><h2>Shop</h2><span class="pill">🪙 ${fmt(S.me.balance)}</span></div>
-      ${items.length ? `<div class="shop">${items.map((i) => { const out = i.refill > 0 && (i.stock ?? 0) <= 0; return `<div class="item card"><div class="cat">${esc(i.category || "Item")}</div><b>${esc(i.name)}</b><span class="price">🪙 ${fmt(i.price)}</span><span class="lbl">${i.refill > 0 ? "Noch " + (i.stock ?? 0) + " da" : "Unbegrenzt"}</span><button class="go" ${out ? "disabled" : ""} data-act="buy" data-id="${esc(i.id)}">${out ? "Ausverkauft" : "Kaufen"}</button></div>`; }).join("")}</div>` : `<div class="card empty">Der Shop ist noch leer.</div>`}
-      <div class="card"><h3>Meine Aufträge</h3>${S.myOrders.length ? `<table><tbody>${S.myOrders.slice(0, 15).map((o) => `<tr><td>${esc(o.title)}</td><td>${o.status === "done" ? '<span class="tag g">✓ ausgeführt</span>' : '<span class="tag y">in Bearbeitung</span>'}</td><td class="lbl">${date(o.createdAt)}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Noch nichts gekauft.</p>`}</div>`;
-  },
-  vote() {
-    const v = S.vote; if (!v?.open) return `<div class="card"><h3>Minigame-Abstimmung</h3><p class="empty">Gerade läuft keine Abstimmung.</p></div>`;
-    const cur = S.ballots.filter((b) => b.round === v.round), total = cur.length, mine = cur.find((b) => b.id === S.uid)?.option;
-    return `<div class="card"><h3>Welches Minigame als Nächstes?</h3>${Object.entries(v.options).map(([id, l]) => { const n = cur.filter((b) => b.option === id).length, p = total ? Math.round((n / total) * 100) : 0;
-      return `<div class="row" style="justify-content:space-between"><span>${esc(l)}${mine === id ? ' <span class="tag g">deine Stimme</span>' : ""}</span><b>${p} %</b></div><div class="bar"><i style="width:${p}%"></i></div><button class="sm" data-act="vote" data-id="${esc(id)}">Dafür stimmen</button><p></p>`; }).join("")}<p class="lbl">${total} Stimmen</p></div>`;
-  },
-  report() {
-    return `<form class="card" data-form="report" style="max-width:520px"><h3>Spieler melden</h3><label for="rt">Spieler</label><select id="rt" name="target">${userOpts("", true)}</select>
-      <label for="rr">Grund</label><select id="rr" name="reason"><option>Cheating / Hacks</option><option>Beleidigung</option><option>Griefing</option><option>Teaming / Regelbruch</option><option>Sonstiges</option></select>
-      <label for="rx">Beschreibung</label><textarea id="rx" name="text" maxlength="500" required></textarea><p><button class="go">Abschicken</button></p></form>`;
-  },
-  punish() {
-    const L = { warn: ["Verwarnung", "y"], jail: ["Knast", "r"], ban: ["Bann", "r"] };
-    const rows = [...S.pun].sort(byTime).reverse();
-    return `<div class="card"><h3>Aktive Strafen</h3>${rows.length ? `<div class="scroll"><table><thead><tr><th>Spieler</th><th>Art</th><th>Grund</th><th>Seit</th></tr></thead><tbody>${rows.map((b) => `<tr><td>${esc(b.gamertag)}</td><td><span class="tag ${L[b.type][1]}">${L[b.type][0]}</span></td><td>${esc(b.reason)}</td><td class="lbl">${date(b.createdAt)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Keine aktiven Strafen.</p>`}</div>`;
-  },
-
-  /* ---------- Schnellansicht ---------- */
-  quick() {
-    const open = S.orders.filter((o) => o.status === "open").sort(byTime);
-    return `<div class="qgrid"><section><h3>Offene Aufträge (${open.length})</h3>${open.map(orderCard).join("") || '<div class="card empty">Keine offenen Aufträge. Neue erscheinen hier automatisch.</div>'}</section>
-      <aside>${pendingBox()}
-        ${isAdmin() ? `<div class="card compact"><h3>🛍 Shop auffüllen</h3>${S.shop.length ? S.shop.map((i) => `<div class="drow"><span style="flex:1">${esc(i.name)}</span><span class="${i.refill > 0 && (i.stock ?? 0) <= 0 ? "neg" : "lbl"}">${i.refill > 0 ? (i.stock ?? 0) + "/" + i.refill : "∞"}</span>${i.refill > 0 ? `<button class="sm go" data-act="refill" data-id="${esc(i.id)}">Auffüllen</button>` : ""}<button class="sm" data-act="shopEdit" data-id="${esc(i.id)}">✎</button><button class="sm bad" data-act="shopDel" data-id="${esc(i.id)}">✕</button></div>`).join("") + `<p><button class="sm go" data-act="refillAll">Alle auffüllen</button></p>` : '<p class="empty">Noch keine Artikel.</p>'}</div>` : ""}
-        <form class="card compact" data-form="death"><h3>☠ Tod melden</h3>
-          <div class="drow"><select name="victim" aria-label="Gestorben" required><option value="" disabled ${S.victim ? "" : "selected"}>Gestorben …</option>${userOpts(S.victim)}</select><span>→</span><select name="killer" aria-label="Getötet von"><option value="">Getötet von … (Umwelt)</option>${userOpts()}</select></div>
-          <div class="drow"><label class="chk"><input type="checkbox" name="bo" checked> Kopfgeld</label><input class="tiny" name="ba" type="number" min="0" value="${C().bountyOnKill}" aria-label="Kopfgeld Betrag"><button class="go sm" style="margin-left:auto">Eintragen</button></div></form>
-        <div class="card compact"><h3>Spieler (${active().length})</h3><input id="pq" placeholder="Suchen …" value="${esc(S.q)}" style="margin-bottom:.4rem"><div id="plist">${playerList()}</div></div></aside></div>`;
-  },
-
-  /* ---------- Vollansicht ---------- */
-  full() {
-    const FT = isAdmin() ? [["players", "👥 Spieler"], ["event", "🎉 Event"], ["shop", "🛍 Shop"], ["reports", "🚩 Meldungen"], ["history", "📜 Verlauf"], ["settings", "⚙ Einstellungen"]] : [["event", "🎉 Event"], ["reports", "🚩 Meldungen"], ["history", "📜 Verlauf"]];
-    if (!FT.some((t) => t[0] === S.fullTab)) S.fullTab = FT[0][0];
-    const F = (t) => S.fullTab === t, pend = S.users.filter((u) => u.status === "pending").length;
-    const tabs = `<div class="tabs">${FT.map(([k, l]) => `<button class="${F(k) ? "on" : ""}" data-act="fullTab" data-t="${k}">${l}${k === "players" && pend ? `<span class="badge">${pend}</span>` : ""}</button>`).join("")}</div>`;
-    const done = S.orders.filter((o) => o.status === "done").slice(0, 25);
-    const adminOnly = isAdmin() ? `
-      ${F("players") ? `<div class="card"><h3>Spieler verwalten</h3><div class="scroll"><table><thead><tr><th>Spieler</th><th>Rolle</th><th>Coins</th><th>Team</th></tr></thead><tbody>${active().map((u) => `<tr><td>${esc(u.gamertag)}</td>
-        <td><select data-role="${u.id}" style="width:auto">${["player", "mod", "admin"].map((r) => `<option ${u.role === r ? "selected" : ""}>${r}</option>`).join("")}</select></td><td>${fmt(u.balance)}</td><td>${esc(S.teams.find((t) => t.id === u.teamId)?.name ?? "–")}</td></tr>`).join("")}</tbody></table></div></div>` : ""}
-      <div class="cols">
-      ${F("players") ? `<form class="card" data-form="coins"><h3>Coins anpassen</h3><label for="cu">Spieler</label><select id="cu" name="uid">${userOpts()}</select><label for="ca">Betrag (+/−)</label><input id="ca" name="amount" type="number" required>
-        <label for="cr">Grund</label><input id="cr" name="reason" required><p><button class="go">Buchen</button></p></form>` : ""}
-      ${F("event") ? `<form class="card" data-form="phase"><h3>Phase ${S.state ? "· " + esc(S.state.label) : ""}</h3><label for="pp">Starten</label><select id="pp" name="phase">${Object.entries(PH).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("")}</select>
-        <label for="pm">Dauer in Minuten (0 = offen)</label><input id="pm" name="min" type="number" min="0" value="10"><label for="pn">Danach automatisch</label><select id="pn" name="next"><option value="">–</option>${Object.entries(PH).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("")}</select><p><button class="go">Phase setzen</button></p></form>` : ""}
-      ${F("event") ? `<form class="card" data-form="voteStart"><h3>Abstimmung</h3><label for="vo">Optionen (Komma)</label><input id="vo" name="opts" placeholder="Spleef, Parkour, Bingo" required><p class="row"><button class="go">Starten</button><button type="button" data-act="voteClose">Beenden</button></p></form>` : ""}
-      ${F("players") ? `<form class="card" data-form="team"><h3>Team anlegen</h3><label for="tn">Name</label><input id="tn" name="name" required><label for="ta">Spieler A</label><select id="ta" name="a">${userOpts()}</select><label for="tb">Spieler B</label><select id="tb" name="b">${userOpts()}</select><p><button class="go">Erstellen</button></p></form>` : ""}
-      ${F("shop") ? (() => { const e = S.shop.find((i) => i.id === S.editItem) || {}; return `<form class="card" data-form="shopItem"><h3>${e.id ? "Artikel bearbeiten" : "Neuer Artikel"}</h3><input type="hidden" name="id" value="${esc(e.id ?? "")}">
-        <label for="sn">Name</label><input id="sn" name="name" value="${esc(e.name ?? "")}" required><label for="sp">Preis</label><input id="sp" name="price" type="number" min="1" value="${e.price ?? ""}" required>
-        <label for="sr">Auffüll-Menge (0 = unbegrenzt)</label><input id="sr" name="refill" type="number" min="0" value="${e.refill ?? 5}" required><label for="sc">Kategorie</label><input id="sc" name="category" value="${esc(e.category ?? "")}">
-        <label for="scm">Befehle (eine Zeile je Befehl, {player} wird ersetzt)</label><textarea id="scm" name="commands" placeholder="/give {player} golden_apple 2" required>${esc((e.commands ?? []).join("\n"))}</textarea>
-        <p class="row"><button class="go">Speichern</button>${e.id ? '<button type="button" data-act="editCancel">Abbrechen</button>' : ""}</p>
-        <div class="row">${S.shop.map((i) => `<button type="button" class="sm" data-act="shopEdit" data-id="${esc(i.id)}">${esc(i.name)} ✎</button><button type="button" class="sm bad" data-act="shopDel" data-id="${esc(i.id)}">✕</button>`).join("")}</div></form>`; })() : ""}
-      ${F("settings") ? `<form class="card" data-form="cfg"><h3>Einstellungen</h3><label for="c1">Knast-Position (x y z)</label><input id="c1" name="jail" value="${esc(C().jail)}"><label for="c2">Spawn (x y z)</label><input id="c2" name="spawn" value="${esc(C().spawn)}">
-        <label for="c3">Minigame (x y z)</label><input id="c3" name="minigame" value="${esc(C().minigame)}"><label for="c4">Startguthaben</label><input id="c4" name="startCoins" type="number" value="${C().startCoins}">
-        <label for="c5">Kill-Belohnung</label><input id="c5" name="killReward" type="number" value="${C().killReward}"><label for="c6">Kopfgeld auf Killer (Standard)</label><input id="c6" name="bountyOnKill" type="number" value="${C().bountyOnKill}"><p><button class="go">Speichern</button></p></form>` : ""}</div>` : "";
-    return `${tabs}${F("players") ? pendingBox() : ""}${adminOnly}<div class="cols">
-      ${F("event") ? `<form class="card" data-form="broadcast"><h3>Broadcast</h3><label for="bt1">Titel</label><input id="bt1" name="title" maxlength="60" required><label for="bt2">Untertitel</label><input id="bt2" name="sub" maxlength="80">
-        <p class="row"><button class="go">Auftrag erstellen</button><button type="button" data-act="airdrop">Mystery-Drop</button></p></form>` : ""}
-      ${F("event") ? `<form class="card" data-form="clear"><h3>Item entfernen</h3><label for="ku">Spieler</label><select id="ku" name="uid">${userOpts()}</select><label for="ki">Item-ID</label><input id="ki" name="item" placeholder="diamond_sword" pattern="[a-z0-9_:]+" required><p><button class="bad">Auftrag erstellen</button></p></form>` : ""}</div>
-      ${F("reports") ? `<div class="card"><h3>Aktive Strafen verwalten</h3>${S.pun.length ? `<table><tbody>${S.pun.map((p) => `<tr><td>${esc(p.gamertag)}</td><td>${esc(p.type)}</td><td>${esc(p.reason)}</td><td><button class="sm" data-act="punEnd" data-id="${p.id}">Beenden</button></td></tr>`).join("")}</tbody></table>` : `<p class="empty">Keine.</p>`}</div>` : ""}
-      ${F("reports") ? `<div class="card"><h3>Meldungen</h3>${S.reports.length ? `<div class="scroll"><table><tbody>${S.reports.map((r) => `<tr><td>${esc(r.reporterName)}</td><td>→ ${esc(r.targetName)}</td><td>${esc(r.reason)}</td><td>${esc(r.text)}</td><td>${r.status === "open" ? `<button class="sm go" data-act="repDone" data-id="${r.id}">Erledigt</button>` : '<span class="tag g">ok</span>'}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">Keine Meldungen.</p>`}</div>` : ""}
-      ${F("history") ? `<div class="card"><h3>Letzte erledigte Aufträge</h3>${done.length ? `<table><tbody>${done.map((o) => `<tr><td>${esc(o.title)}</td><td>${esc(o.gamertag ?? "")}</td><td class="lbl">${esc(o.doneBy ?? "")}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Noch keine.</p>`}</div>` : ""}`;
-  },
-};
-
-/* ================= Render ================= */
-function render(force) {
-  const ae = document.activeElement;
-  if (!force && ae && ["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName)) { dirty = true; return; }
-  dirty = false;
-  const open = S.orders.filter((o) => o.status === "open").length;
-  document.title = (open ? `(${open}) ` : "") + "Realm Control";
-  if (!S.uid) return loginView();
-  if (!S.me) return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>Konto wird geladen …</p></div>`);
-  if (S.me.status !== "active") return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>${S.me.status === "rejected" ? "Deine Anmeldung wurde abgelehnt." : `Hallo <b>${esc(S.me.gamertag)}</b>! Dein Konto wartet auf Freischaltung durch einen Admin.`}</p><p><button data-act="logout">Abmelden</button></p></div>`);
-  const nb = (k, l) => { const [ic, ...t] = l.split(" "); return `<button data-act="nav" data-v="${k}" class="${S.view === k ? "on" : ""}"><span class="ic">${ic}</span><span>${t.join(" ")}</span></button>`; };
-  const TITLES = { quick: "Schnellansicht", full: "Vollansicht", bounty: "Kopfgelder", vote: "Abstimmung", report: "Spieler melden", punish: "Strafen" };
-  const nav = (isStaff() ? `<div class="grp">Admin</div>${nb("quick", "⚡ Schnellansicht")}${nb("full", "🧰 Vollansicht")}` : "") +
-    `<div class="grp">Konto</div>${nb("wallet", "💳 Wallet")}${nb("shop", "🛒 Shop")}<div class="grp">Event</div>${nb("bounty", "🎯 Kopfgelder")}${nb("vote", "🗳 Abstimmung")}<div class="grp">Regeln</div>${nb("report", "🚩 Melden")}${nb("punish", "⚖ Strafen")}<div class="grp"></div><button data-act="logout">Abmelden</button>`;
-  const v = ["quick", "full"].includes(S.view) && !isStaff() ? "wallet" : V[S.view] ? S.view : "wallet";
-  $("#root").innerHTML = `<div id="app"><header class="topbar"><span class="brand">⛏ Realm Control</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${TITLES[v] ? `<h2 class="ptitle">${TITLES[v]}</h2>` : ""}${V[v]()}</main></div>`;
-  tick();
-}
-function loginView() {
-  const reg = S.mode === "register";
-  $("#root").innerHTML = `<form class="login card" data-form="auth"><h1>Realm Control</h1><div class="row"><button type="button" class="${reg ? "" : "go"}" data-act="mode" data-m="login">Anmelden</button><button type="button" class="${reg ? "go" : ""}" data-act="mode" data-m="register">Registrieren</button></div>
-    <label for="gt">Gamertag</label><input id="gt" name="gamertag" autocomplete="username" required><label for="pw">Passwort (mind. 6 Zeichen)</label><input id="pw" name="password" type="password" minlength="6" autocomplete="${reg ? "new-password" : "current-password"}" required>
-    <p><button class="go">${reg ? "Konto erstellen" : "Anmelden"}</button></p><p class="neg">${esc(S.authMsg)}</p>${reg ? '<p class="lbl">Nach der Registrierung schaltet ein Admin dein Konto frei.</p>' : ""}</form>`;
-}
-document.addEventListener("focusout", () => { if (dirty) setTimeout(() => render(), 80); });
-function tick() {
-  const el = $("#timer"), s = S.state; if (!el) return;
-  if (!s) { el.textContent = ""; return; }
-  const left = s.endsAt?.toMillis ? Math.max(0, Math.round((s.endsAt.toMillis() - Date.now()) / 1000)) : null;
-  el.innerHTML = `<small>${esc(s.label ?? "")}</small>${left === null ? "" : String(Math.floor(left / 60)).padStart(2, "0") + ":" + String(left % 60).padStart(2, "0")}`;
-  if (isAdmin() && left === 0 && s.next && PH[s.next] && !tick.busy) { tick.busy = true; setPhase(s.next, 0, null).finally(() => (tick.busy = false)); }
-}
-setInterval(tick, 1000);
-
-/* ================= Klicks ================= */
-const copy = async (t) => { try { await navigator.clipboard.writeText(t); } catch { const a = document.createElement("textarea"); a.value = t; document.body.append(a); a.select(); document.execCommand("copy"); a.remove(); } toast("Kopiert", "ok"); };
-const ask = (t) => prompt(t)?.trim();
-const user = (id) => S.users.find((u) => u.id === id);
-const pun = (u, type, reason) => addDoc(collection(db, "punishments"), { uid: u.id, gamertag: u.gamertag, type, reason, by: S.me.gamertag, active: true, createdAt: serverTimestamp() });
-const ACT = {
-  nav: (b) => { S.view = b.dataset.v; render(true); },
-  mode: (b) => { S.mode = b.dataset.m; S.authMsg = ""; render(true); },
-  logout: () => signOut(auth),
-  copy: (b) => copy(b.dataset.t),
-  copyAll: (b) => copy((S.orders.find((o) => o.id === b.dataset.id)?.commands ?? []).join("\n")),
-  done: (b) => updateDoc(doc(db, "orders", b.dataset.id), { status: "done", doneAt: serverTimestamp(), doneBy: S.me.gamertag }),
-  approve: (b) => approve(b.dataset.id).then(() => toast("Freigeschaltet", "ok")),
-  reject: (b) => updateDoc(U(b.dataset.id), { status: "rejected" }),
-  buy: (b) => buyItem(b.dataset.id),
-  fullTab: (b) => { S.fullTab = b.dataset.t; render(true); },
-  walTab: (b) => { S.walTab = b.dataset.t; render(true); },
-  sendFrom: (b) => { S.sendFrom = b.dataset.f; render(true); },
-  pOpen: (b) => { S.openUser = S.openUser === b.dataset.id ? "" : b.dataset.id; $("#plist").innerHTML = playerList(); },
-  popClose: () => closePop(),
-  vote: (b) => setDoc(doc(db, "events", "vote", "ballots", S.uid), { option: b.dataset.id, round: S.vote.round }).then(() => toast("Stimme gespeichert", "ok")),
-  victim: (b) => { S.victim = b.dataset.id; toast(`${user(b.dataset.id).gamertag} als „gestorben“ vorgewählt`); render(true); },
-  freeze: (b) => { const u = user(b.dataset.id); order(`Freeze: ${u.gamertag}`, CMD.freeze(u.gamertag)); },
-  unfreeze: (b) => { const u = user(b.dataset.id); order(`Auftauen: ${u.gamertag}`, CMD.unfreeze(u.gamertag)); },
-  jail: async (b) => { const u = user(b.dataset.id), r = clean(ask(`Grund für Knast (${u.gamertag})?`)); if (!r) return; await pun(u, "jail", r); order(`Knast: ${u.gamertag}`, CMD.jail(u.gamertag), r); },
-  unjail: async (b) => { const u = user(b.dataset.id); for (const p of S.pun.filter((p) => p.uid === u.id && p.type === "jail")) await updateDoc(doc(db, "punishments", p.id), { active: false }); order(`Knast beenden: ${u.gamertag}`, CMD.unjail(u.gamertag)); },
-  warn: async (b) => { const u = user(b.dataset.id), r = clean(ask(`Grund der Verwarnung (${u.gamertag})?`)); if (!r) return; await pun(u, "warn", r); order(`Warnung: ${u.gamertag}`, CMD.warn(u.gamertag, r), r); },
-  kick: (b) => { const u = user(b.dataset.id), r = clean(ask("Grund (optional)?") ?? ""); order(`Kick: ${u.gamertag}`, CMD.kick(u.gamertag, r), r); },
-  ban: async (b) => { const u = user(b.dataset.id), r = clean(ask(`Grund für Bann (${u.gamertag})?`)); if (!r) return; await pun(u, "ban", r); order(`Bann: ${u.gamertag}`, CMD.kick(u.gamertag, "Gebannt: " + r), "Zusätzlich im Realm unter Mitglieder sperren."); },
-  ghost: (b) => { const u = user(b.dataset.id); order(`Ghost zu ${u.gamertag}`, CMD.ghost(S.me.gamertag, u.gamertag)); },
-  unghost: () => order("Wieder sichtbar", CMD.unghost(S.me.gamertag)),
-  airdrop: () => {
-    const L = [["diamond", 3], ["golden_apple", 2], ["iron_ingot", 12], ["ender_pearl", 4], ["arrow", 32], ["cooked_beef", 16], ["emerald", 6], ["experience_bottle", 8], ["tnt", 2]];
-    const pick = [...L].sort(() => Math.random() - 0.5).slice(0, 5), slots = [3, 7, 11, 15, 22];
-    order("Mystery-Drop (Kiste)", ["/setblock ~2 ~ ~ chest", ...pick.map(([id, n], i) => `/replaceitem block ~2 ~ ~ slot.container ${slots[i]} ${id} ${n}`), "/title @a title §6Airdrop gelandet!"], "Stell dich dorthin, wo der Drop landen soll, und führe die Befehle der Reihe nach aus.");
-  },
-  punEnd: async (b) => { const p = S.pun.find((x) => x.id === b.dataset.id); await updateDoc(doc(db, "punishments", p.id), { active: false }); if (p.type === "jail") order(`Knast beenden: ${p.gamertag}`, CMD.unjail(p.gamertag)); },
-  repDone: (b) => updateDoc(doc(db, "reports", b.dataset.id), { status: "done" }),
-  shopDel: (b) => confirm("Artikel löschen?") && deleteDoc(doc(db, "shop_items", b.dataset.id)),
-  shopEdit: (b) => { S.editItem = b.dataset.id; S.view = "full"; S.fullTab = "shop"; render(true); },
-  editCancel: () => { S.editItem = ""; render(true); },
-  refill: (b) => updateDoc(doc(db, "shop_items", b.dataset.id), { stock: S.shop.find((i) => i.id === b.dataset.id).refill }).then(() => toast("Aufgefüllt", "ok")),
-  refillAll: async () => { for (const i of S.shop) if (i.refill > 0) await updateDoc(doc(db, "shop_items", i.id), { stock: i.refill }); toast("Alles aufgefüllt", "ok"); },
-  voteClose: () => updateDoc(doc(db, "events", "vote"), { open: false }),
-};
-document.addEventListener("click", (e) => { const b = e.target.closest("[data-act]"); if (b && ACT[b.dataset.act]) { e.preventDefault(); Promise.resolve(ACT[b.dataset.act](b)).catch((x) => toast(x.message, "err")); } });
-document.addEventListener("change", (e) => { const s = e.target.closest("[data-role]"); if (s && isAdmin()) updateDoc(U(s.dataset.role), { role: s.value }).then(() => toast("Rolle geändert", "ok")); });
-
-/* ================= Formulare ================= */
-const xyz = (v) => { if (!/^-?\d+ -?\d+ -?\d+$/.test(v.trim())) throw Error("Koordinaten als „x y z“ angeben"); return v.trim(); };
-const FORM = {
-  async auth(f) {
-    const g = f.gamertag.value.trim(), p = f.password.value; S.authMsg = "";
-    try {
-      if (S.mode === "register") {
-        if (!NAME.test(g)) throw Error("Gamertag: nur Buchstaben, Zahlen, Leerzeichen, _ (max. 20)");
-        const c = await createUserWithEmailAndPassword(auth, mail(g), p);
-        await setDoc(U(c.user.uid), { gamertag: g, role: "player", status: "pending", balance: 0, kills: 0, deaths: 0, hearts: 3, teamId: null, createdAt: serverTimestamp() });
-      } else await signInWithEmailAndPassword(auth, mail(g), p);
-    } catch (e) { S.authMsg = { "auth/email-already-in-use": "Dieser Gamertag ist schon registriert.", "auth/invalid-credential": "Gamertag oder Passwort falsch.", "auth/weak-password": "Passwort zu kurz." }[e.code] ?? e.message; loginView(); }
-  },
-  transfer: (f) => req("transfer", { from: f.from.value, to: f.to.value, amount: +f.amount.value }),
-  bounty: (f) => req("bounty", { target: f.target.value, amount: +f.amount.value }),
-  async report(f) { await addDoc(collection(db, "reports"), { uid: S.uid, reporterName: S.me.gamertag, target: f.target.value, targetName: uname(f.target.value), reason: f.reason.value, text: f.text.value.trim(), status: "open", createdAt: serverTimestamp() }); toast("Meldung gesendet", "ok"); },
-  death: (f) => { S.victim = ""; return req("kill", { victim: f.victim.value, killer: f.killer.value || null, bountyAmount: f.killer.value && f.bo.checked ? Math.max(0, Math.floor(+f.ba.value || 0)) : 0 }); },
-  broadcast: (f) => order("Broadcast", [...(f.sub.value.trim() ? [`/title @a subtitle ${clean(f.sub.value)}`] : []), `/title @a title ${clean(f.title.value)}`]),
-  clear: (f) => order(`Item entfernen: ${uname(f.uid.value)}`, [`/clear ${q(uname(f.uid.value))} ${f.item.value.trim()}`]),
-  coins: async (f) => { await adjust(f.uid.value, Math.floor(+f.amount.value), clean(f.reason.value)); toast("Gebucht", "ok"); },
-  phase: (f) => setPhase(f.phase.value, Math.max(0, +f.min.value || 0), f.next.value),
-  async voteStart(f) { const options = Object.fromEntries(f.opts.value.split(",").map((s) => s.trim()).filter(Boolean).map((l) => [slug(l), l])); await setDoc(doc(db, "events", "vote"), { open: true, round: (S.vote?.round ?? 0) + 1, options }); toast("Abstimmung gestartet", "ok"); },
-  async team(f) {
-    if (f.a.value === f.b.value) throw Error("Zwei verschiedene Spieler wählen");
-    const ref = await addDoc(collection(db, "teams"), { name: f.name.value.trim(), members: [f.a.value, f.b.value], vault: 0 });
-    await updateDoc(U(f.a.value), { teamId: ref.id }); await updateDoc(U(f.b.value), { teamId: ref.id }); toast("Team erstellt", "ok");
-  },
-  async shopItem(f) {
-    const d = { name: f.name.value.trim(), price: +f.price.value, category: f.category.value.trim(), commands: f.commands.value.split("\n").map((s) => s.trim()).filter(Boolean), refill: Math.max(0, Math.floor(+f.refill.value || 0)), active: true };
-    const old = S.shop.find((i) => i.id === f.id.value);
-    if (old) { d.stock = d.refill ? Math.min(old.stock ?? d.refill, d.refill) : 0; await updateDoc(doc(db, "shop_items", old.id), d); }
-    else { if (S.shop.some((i) => i.id === slug(d.name))) throw Error("Artikel gibt es schon"); d.stock = d.refill; await setDoc(doc(db, "shop_items", slug(d.name)), d); }
-    S.editItem = ""; toast("Artikel gespeichert", "ok"); render(true);
-  },
-  async cfg(f) { await setDoc(doc(db, "settings", "config"), { jail: xyz(f.jail.value), spawn: xyz(f.spawn.value), minigame: xyz(f.minigame.value), startCoins: +f.startCoins.value, killReward: +f.killReward.value, bountyOnKill: +f.bountyOnKill.value }); toast("Gespeichert", "ok"); },
-};
-document.addEventListener("submit", async (e) => {
-  const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
-  try { await FORM[f.dataset.form](f, e); if (!["auth", "cfg"].includes(f.dataset.form)) f.reset?.(); } catch (x) { toast(x.message, "err"); }
-});
-function listenTeamTx() {
-  teamUn?.(); teamUn = null; S.teamTx = [];
-  if (!S.me?.teamId || S.me.status !== "active") return;
-  teamUn = onSnapshot(query(collection(db, "tx"), where("teamId", "==", S.me.teamId)),
-    (s) => { S.teamTx = s.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.ts?.seconds ?? 9e12) - (a.ts?.seconds ?? 9e12)).slice(0, 40); render(); },
-    (e) => console.warn(e.code));
-}
-function txRow(t) {
-  const pos = t.amount >= 0;
-  return `<div class="tx"><span class="dot ${pos ? "p" : "n"}">${pos ? "↓" : "↑"}</span><div><b>${esc(t.reason)}</b><small>${date(t.ts)}${t.by ? " · " + esc(t.by) : ""}</small></div><b class="${pos ? "pos" : "neg"}">${pos ? "+" : ""}${fmt(t.amount)}</b></div>`;
-}
-function playerList() {
-  const ql = S.q.trim().toLowerCase(), chip = (a, id, l) => `<button class="chip sm ${a === "ban" ? "bad" : ""}" data-act="${a}" data-id="${id}">${l}</button>`;
-  const rows = active().filter((u) => !ql || u.gamertag.toLowerCase().includes(ql)).map((u) => `<div class="pl"><button class="pn" data-act="pOpen" data-id="${u.id}"><span>${esc(u.gamertag)}</span><small>🪙 ${fmt(u.balance)}${S.state?.phase === "hearts" ? " ❤" + (u.hearts ?? 3) : ""} ${S.openUser === u.id ? "▴" : "▾"}</small></button>${S.openUser === u.id ? `<div class="chips">${[["victim", "☠ Tod"], ["freeze", "🧊 Freeze"], ["unfreeze", "Auftauen"], ["jail", "🔒 Knast"], ["unjail", "🔓 Raus"], ["warn", "⚠ Warn"], ["kick", "👢 Kick"], ["ban", "🔨 Bann"], ["ghost", "👻 Ghost"]].map(([a, l]) => chip(a, u.id, l)).join("")}</div>` : ""}</div>`).join("");
-  return '<p class="lbl hint">Tippe auf einen Spieler für Aktionen</p>' + (rows || '<p class="empty">Keine Treffer.</p>') + `<p style="margin:.5rem 0 0"><button class="sm" data-act="unghost">Wieder sichtbar</button></p>`;
-}
-
-/* ===== Kauf-Popup mit 60-Sekunden-Countdown ===== */
-async function buyItem(id) {
-  const it = S.shop.find((i) => i.id === id); if (!it) return;
-  if (it.refill > 0 && (it.stock ?? 0) <= 0) return toast("Ausverkauft", "err");
-  if (S.me.balance < it.price) return toast("Nicht genug Coins", "err");
-  closePop();
-  const ref = await addDoc(collection(db, "requests"), { type: "buy", payload: { itemId: id }, uid: S.uid, status: "pending", createdAt: serverTimestamp() });
-  const p = (S.pop = { title: it.name, start: Date.now(), phase: "wait", msg: "", un: [] });
-  p.un.push(onSnapshot(ref, (d) => {
-    const s = d.data(); if (S.pop !== p || !s) return;
-    if (s.status === "error") { p.phase = "error"; p.msg = s.result; renderModal(); }
-    if (s.orderId) { p.orderId = s.orderId; checkPop(); }
-    if (s.status === "done" && s.orderId && !p.watch) {
-      p.watch = true;
-      p.un.push(onSnapshot(doc(db, "orders", s.orderId), (o) => { if (S.pop === p && o.data()?.status === "done") { p.phase = "done"; renderModal(); } }));
-    }
-  }));
-  renderModal();
-}
-function checkPop() {
-  const p = S.pop; if (!p || p.phase !== "wait") return;
-  const o = S.myOrders.find((x) => x.status === "done" && (x.id === p.orderId || (x.kind === "shop" && x.title === "Kauf: " + p.title && (x.createdAt?.toMillis?.() ?? 0) >= p.start - 15000)));
-  if (o) { p.phase = "done"; renderModal(); }
-}
-function closePop() { S.pop?.un.forEach((f) => f()); S.pop = null; renderModal(); }
-function renderModal() {
-  const m = $("#modal"), p = S.pop; if (!p) { m.innerHTML = ""; m.dataset.key = ""; return; }
-  const left = Math.max(0, 60 - Math.floor((Date.now() - p.start) / 1000));
-  const key = p.phase + (left === 0 ? "-end" : "");
-  if (p.phase === "wait" && m.dataset.key === key) {   /* nur Zahl + Ring aktualisieren, kein Neuaufbau */
-    const r = m.querySelector(".ring"); if (r) { r.style.setProperty("--p", (left / 60) * 100); r.firstElementChild.textContent = left; }
-    return;
-  }
-  m.dataset.key = key;
-  let body;
-  if (p.phase === "done") body = `<svg class="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg><h2>Auftrag ausgeführt</h2><p class="lbl">${esc(p.title)} wurde geliefert. Viel Spaß!</p><button class="go" data-act="popClose">Super</button>`;
-  else if (p.phase === "error") body = `<div class="bad-x">✕</div><h2>Kauf fehlgeschlagen</h2><p class="lbl">${esc(p.msg)}</p><button data-act="popClose">Schließen</button>`;
-  else body = `<div class="ring" style="--p:${(left / 60) * 100}"><span>${left}</span></div><h2>Auftrag wird ausgeführt</h2><b>${esc(p.title)}</b>${left === 0 ? `<p class="lbl">Das dauert etwas länger. Dein Auftrag bleibt offen, den Status siehst du im Shop unter „Meine Aufträge“.</p><button data-act="popClose">Schließen</button>` : `<p class="lbl">Das passiert automatisch und kann einen Moment dauern.</p>`}`;
-  m.innerHTML = `<div class="overlay"><div class="card sheet" role="dialog" aria-live="polite">${body}</div></div>`;
-}
-setInterval(() => { if (S.pop?.phase === "wait") renderModal(); }, 1000);
-document.addEventListener("input", (e) => { if (e.target.id === "pq") { S.q = e.target.value; $("#plist").innerHTML = playerList(); } });
-
-render(true);
+onAuthStateChanged(auth, (u) => (u ? panel(u) : loginView()));
 </script>
 </body>
 </html>
