@@ -153,6 +153,50 @@ const CFG0 = { jail: "0 200 0", spawn: "0 100 0", minigame: "0 100 0", startCoin
 const S = { fullTab: "", walTab: "me", sendFrom: "me", openUser: "", q: "", shopQ: "", shopCat: "Alle", cart: {}, pop: null, teamTx: [], uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], support: [], mySupport: [], state: null, vote: null, ballots: [], cfg: {} };
 let teamSeen, teamUn, unsubs = [], started = false, dirty = false, firstOrders = true, busy = false;
 const C = () => ({ ...CFG0, ...S.cfg });
+let catalogSeedStarted=false;
+const BLOCK_CATALOG = (() => {
+  const a=[];
+  const add=(id,name,cat,price,stock=1000,packSize=16,icon="🧱")=>a.push({id,name,category:cat,price,stock,packSize,minecraftId:id,icon,active:true,commands:[]});
+  [
+    ["dirt","Erde",2,2400],["coarse_dirt","Grobe Erde",3,1200],["grass_block","Grasblock",4,1200],["podzol","Podsol",5,700],["mycelium","Myzel",12,220],
+    ["stone","Stein",3,3000],["cobblestone","Bruchstein",2,3500],["deepslate","Tiefenschiefer",3,2200],["cobbled_deepslate","Bruchtiefenschiefer",3,2200],
+    ["granite","Granit",3,1500],["diorite","Diorit",3,1500],["andesite","Andesit",3,1500],["tuff","Tuffstein",4,1000],["calcite","Kalzit",8,450],
+    ["sand","Sand",3,2200],["red_sand","Roter Sand",5,900],["gravel","Kies",3,1800],["clay","Ton",6,900],["mud","Schlamm",4,900],
+    ["stone_bricks","Steinziegel",4,1600],["mossy_stone_bricks","Bemooste Steinziegel",7,700],["chiseled_stone_bricks","Gemeißelte Steinziegel",8,500],
+    ["deepslate_bricks","Tiefenschieferziegel",6,1200],["deepslate_tiles","Tiefenschieferfliesen",7,1000],["polished_deepslate","Polierter Tiefenschiefer",6,1200],
+    ["tuff_bricks","Tuffziegel",7,900],["polished_tuff","Polierter Tuff",7,900],["sandstone","Sandstein",5,1200],["red_sandstone","Roter Sandstein",6,800],
+    ["quartz_block","Quarzblock",14,500],["quartz_bricks","Quarzziegel",16,400],["quartz_pillar","Quarzsäule",17,350],["smooth_quartz","Glatter Quarz",17,350]
+  ].forEach(x=>add(x[0],x[1],"Stein",x[2],x[3],16,"🪨"));
+  [
+    ["oak_log","Eichenstamm",5,1800],["spruce_log","Fichtenstamm",5,1800],["birch_log","Birkenstamm",5,1800],["jungle_log","Tropenbaumstamm",6,1200],
+    ["acacia_log","Akazienstamm",6,1200],["dark_oak_log","Schwarzeichenstamm",6,1200],["mangrove_log","Mangrovenstamm",8,900],["cherry_log","Kirschstamm",8,900],
+    ["pale_oak_log","Blasseichenstamm",9,650],["bamboo_block","Bambusblock",6,1000],["crimson_stem","Karmesinstiel",10,650],["warped_stem","Wirrstiel",10,650]
+  ].forEach(x=>add(x[0],x[1],"Holz",x[2],x[3],16,"🪵"));
+  ["oak","spruce","birch","jungle","acacia","dark_oak","mangrove","cherry","pale_oak"].forEach((w,i)=>add(w+"_planks",["Eichen","Fichten","Birken","Tropenholz","Akazien","Schwarzeichen","Mangroven","Kirsch","Blasseichen"][i]+"bretter","Holz",i<6?3:5,2200,16,"🪵"));
+  const colors=[["white","Weiß"],["orange","Orange"],["magenta","Magenta"],["light_blue","Hellblau"],["yellow","Gelb"],["lime","Hellgrün"],["pink","Rosa"],["gray","Grau"],["light_gray","Hellgrau"],["cyan","Türkis"],["purple","Violett"],["blue","Blau"],["brown","Braun"],["green","Grün"],["red","Rot"],["black","Schwarz"]];
+  colors.forEach(([id,n])=>{add(id+"_wool",n+"e Wolle","Farben",5,700,16,"🎨");add(id+"_concrete",n+"er Beton","Farben",7,700,16,"🎨");add(id+"_concrete_powder",n+"es Betonpulver","Farben",5,700,16,"🎨");add(id+"_terracotta",n+"e Terrakotta","Farben",6,600,16,"🎨");add(id+"_stained_glass",n+"es Glas","Glas",7,600,16,"🪟");});
+  [
+    ["glass","Glas","Glas",5,1600,"🪟"],["glowstone","Leuchtstein","Licht",14,450,"💡"],["sea_lantern","Seelaterne","Licht",24,220,"💡"],["shroomlight","Shroomlight","Licht",22,220,"💡"],
+    ["moss_block","Moosblock","Natur",6,800,"🌿"],["cactus","Kaktus","Natur",5,700,"🌵"],["bamboo","Bambus","Natur",3,1400,"🎋"],
+    ["netherrack","Netherrack","Nether",2,3000,"🔥"],["soul_sand","Seelensand","Nether",6,1000,"🔥"],["soul_soil","Seelenerde","Nether",6,900,"🔥"],["magma","Magmablock","Nether",9,600,"🔥"],
+    ["nether_brick","Netherziegel","Nether",6,1000,"🔥"],["red_nether_brick","Rote Netherziegel","Nether",9,600,"🔥"],["basalt","Basalt","Nether",5,1200,"🔥"],["blackstone","Schwarzstein","Nether",6,1200,"🔥"],
+    ["obsidian","Obsidian","Nether",35,180,"🟪"],["crying_obsidian","Weinender Obsidian","Nether",45,100,"🟪"],
+    ["end_stone","Endstein","End",9,900,"🌌"],["end_bricks","Endsteinziegel","End",12,600,"🌌"],["purpur_block","Purpurblock","End",20,350,"🌌"],["purpur_pillar","Purpursäule","End",22,250,"🌌"],
+    ["snow","Schneeblock","Eis",3,1400,"❄️"],["ice","Eis","Eis",6,700,"🧊"],["packed_ice","Packeis","Eis",12,450,"🧊"],["blue_ice","Blaueis","Eis",28,180,"🧊"],
+    ["copper_block","Kupferblock","Kupfer",12,650,"🟠"],["cut_copper","Geschnittenes Kupfer","Kupfer",14,550,"🟠"],["exposed_copper","Freiliegendes Kupfer","Kupfer",15,450,"🟠"],["weathered_copper","Verwittertes Kupfer","Kupfer",17,350,"🟠"],["oxidized_copper","Oxidiertes Kupfer","Kupfer",20,250,"🟠"],
+    ["prismarine","Prismarin","Ozean",12,500,"🌊"],["prismarine_bricks","Prismarinziegel","Ozean",15,400,"🌊"],["dark_prismarine","Dunkler Prismarin","Ozean",18,300,"🌊"]
+  ].forEach(x=>add(x[0],x[1],x[2],x[3],x[4],16,x[5]));
+  [["coal_block","Kohleblock",15,300],["iron_block","Eisenblock",45,150],["redstone_block","Redstoneblock",45,120],["lapis_block","Lapislazuliblock",55,100],["gold_block","Goldblock",100,60],["emerald_block","Smaragdblock",180,25],["diamond_block","Diamantblock",350,15],["netherite_block","Netheriteblock",2500,2],["beacon","Leuchtfeuer",600,3],["enchanting_table","Verzauberungstisch",60,30],["ender_chest","Endertruhe",80,25],["respawn_anchor","Respawn-Anker",75,25]].forEach(x=>add(x[0],x[1],"Premium",x[2],x[3],1,"💎"));
+  return a;
+})();
+async function ensureDefaultCatalog(){
+  if(catalogSeedStarted||!isAdmin())return; catalogSeedStarted=true;
+  try{
+    for(const x of BLOCK_CATALOG){const ref=doc(db,"shop_items","std_"+x.id), s=await getDoc(ref); if(!s.exists())await setDoc(ref,x);}
+    toast("Minecraft-Standardsortiment ist bereit","ok");
+  }catch(e){console.warn("Katalog:",e);catalogSeedStarted=false;}
+}
+
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmt = (n) => Number(n ?? 0).toLocaleString("de-DE");
@@ -210,7 +254,7 @@ function listen() {
   on(col("users"), (s) => (S.users = list(s)));
   on(query(col("tx"), where("uid", "==", S.uid)), (s) => (S.tx = list(s).sort((a, b) => (b.ts?.seconds ?? 9e12) - (a.ts?.seconds ?? 9e12)).slice(0, 40)));
   on(col("teams"), (s) => (S.teams = list(s)));
-  on(col("shop_items"), (s) => (S.shop = list(s)));
+  on(col("shop_items"), (s) => { S.shop = list(s); if(isAdmin()) ensureDefaultCatalog(); });
   on(query(col("punishments"), where("active", "==", true)), (s) => (S.pun = list(s)));
   on(query(col("bounties"), where("active", "==", true)), (s) => (S.bounties = list(s)));
   on(query(col("orders"), where("uid", "==", S.uid)), (s) => (S.myOrders = list(s).sort(byTime).reverse()));
