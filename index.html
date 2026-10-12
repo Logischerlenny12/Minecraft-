@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Realm Control</title>
+<title>RealmOS</title>
 <style>
 :root{--ink:#f5f7ff;--mute:rgba(235,240,255,.68);--green:#4ade80;--gold:#fbbf24;--red:#fb7185;--aqua:#67e8f9;--r:22px}
 *{box-sizing:border-box}
@@ -102,6 +102,36 @@ nav .ic{font-size:1.3rem;width:1.7rem;text-align:center}
 .hint{font-size:.82rem;margin:0 0 .4rem}
 .order button.go{width:100%;margin-top:.4rem;font-weight:650}
 @media (max-width:860px){nav button{flex-direction:column;gap:0;font-size:.7rem;min-height:54px;padding:.3rem .8rem}nav .ic{font-size:1.25rem}}
+
+/* ===== RealmOS 2.0 ===== */
+:root{--os:#080d1b;--os2:#101a30;--os3:#172541;--purple:#7767ff;--cyan:#46d7ff;--orange:#ffb84d}
+html{background:#080d1b}body{background:radial-gradient(circle at 15% 10%,#263b78 0,transparent 32%),radial-gradient(circle at 90% 18%,#442b78 0,transparent 30%),linear-gradient(145deg,#07101f,#101a32 55%,#07101f);background-attachment:fixed}
+#bg{display:none!important}
+#app{grid-template-columns:104px minmax(0,1fr);grid-template-rows:62px 1fr;gap:14px;padding:12px;max-width:1600px;margin:auto}
+header.topbar{border-radius:20px;padding:.55rem 1rem;background:rgba(8,13,27,.72)}
+.brand{font-size:1.05rem}.brand:before{content:"◈";display:inline-grid;place-items:center;width:30px;height:30px;margin-right:8px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--cyan));color:white}
+nav{top:88px;border-radius:26px;padding:10px 8px;align-items:stretch;background:rgba(8,13,27,.72)}
+nav button{display:grid;place-items:center;text-align:center!important;gap:3px;padding:10px 4px!important;font-size:.69rem;min-height:58px}
+nav button .ic{font-size:1.45rem;line-height:1}nav .grp{display:none}
+nav button.on{background:linear-gradient(145deg,rgba(119,103,255,.5),rgba(70,215,255,.16));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+main{background:rgba(5,10,22,.28);border:1px solid rgba(255,255,255,.08);border-radius:30px;padding:18px;min-height:calc(100vh - 100px)}
+.card{background:linear-gradient(145deg,rgba(28,40,70,.78),rgba(12,20,38,.82));border-color:rgba(255,255,255,.12);box-shadow:0 14px 34px rgba(0,0,0,.22)}
+.os-hero{padding:22px;border-radius:28px;background:linear-gradient(120deg,#17264a,#29205c 58%,#15465c);margin-bottom:16px;border:1px solid rgba(255,255,255,.14)}
+.os-hero h2{font-size:2rem;margin:0}.os-hero p{color:var(--mute);margin:.35rem 0 0}
+.marketbar{display:grid;grid-template-columns:minmax(180px,1fr) auto;gap:10px;margin-bottom:12px}.marketbar input{background:#fff;color:#111;border:0;padding:.8rem 1rem}.marketbar input::placeholder{color:#777}
+.cats{display:flex;gap:7px;overflow:auto;padding:2px 0 12px}.cats button{white-space:nowrap}.cats button.on{background:var(--purple)}
+.shop{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.item.card{padding:0;overflow:hidden;background:#f7f8fb;color:#111;border:0;border-radius:20px;box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.item .prodicon{height:112px;display:grid;place-items:center;font-size:3.2rem;background:linear-gradient(145deg,#eef2f7,#dce5ef)}
+.item .pbody{padding:13px;display:grid;gap:6px}.item .cat,.item .lbl{color:#687385}.item .price{color:#111;font-size:1.25rem}.item button{color:#111;border-color:#d4d8df;background:#fff}.item button.go{background:#ffd814;border-color:#f3c200}
+.qty{display:grid;grid-template-columns:38px 1fr 38px;gap:5px;align-items:center}.qty button{padding:.35rem}.qty b{text-align:center}
+.cartbox{position:sticky;bottom:8px;z-index:5;border:1px solid rgba(255,255,255,.18);background:rgba(8,13,27,.92)}
+.cartline{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--red);font-size:.7rem;color:white}
+.support-call{background:linear-gradient(135deg,rgba(70,215,255,.24),rgba(119,103,255,.28));border:1px solid rgba(112,220,255,.4)}
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}.app-tile{min-height:150px;border-radius:26px;padding:18px;text-align:left;display:flex;flex-direction:column;justify-content:space-between}.app-tile .ai{font-size:2.5rem}
+@media(max-width:860px){#app{display:block;padding:8px 8px 92px}header.topbar{position:sticky;top:6px;z-index:9;margin-bottom:8px}main{padding:12px;border-radius:24px;min-height:calc(100vh - 155px)}nav{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;padding:5px 7px;border-radius:24px}nav button{min-width:62px;min-height:54px;padding:6px!important}.marketbar{grid-template-columns:1fr}.shop{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.item .prodicon{height:86px}.item .pbody{padding:10px}.item .price{font-size:1.05rem}}
+@media(max-width:480px){.shop{grid-template-columns:1fr 1fr}.item .pbody{font-size:.88rem}.os-hero h2{font-size:1.55rem}}
 </style>
 </head>
 <body>
@@ -120,7 +150,7 @@ const auth = getAuth(app), db = getFirestore(app);
 
 /* ================= State & Helfer ================= */
 const CFG0 = { jail: "0 200 0", spawn: "0 100 0", minigame: "0 100 0", startCoins: 100, killReward: 25, bountyOnKill: 50 };
-const S = { fullTab: "", walTab: "me", sendFrom: "me", openUser: "", q: "", pop: null, teamTx: [], uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], state: null, vote: null, ballots: [], cfg: {} };
+const S = { fullTab: "", walTab: "me", sendFrom: "me", openUser: "", q: "", shopQ: "", shopCat: "Alle", cart: {}, pop: null, teamTx: [], uid: null, me: null, view: "quick", mode: "login", authMsg: "", victim: "", users: [], tx: [], teams: [], shop: [], pun: [], bounties: [], myOrders: [], orders: [], reports: [], support: [], mySupport: [], state: null, vote: null, ballots: [], cfg: {} };
 let teamSeen, teamUn, unsubs = [], started = false, dirty = false, firstOrders = true, busy = false;
 const C = () => ({ ...CFG0, ...S.cfg });
 const $ = (s) => document.querySelector(s);
@@ -184,12 +214,14 @@ function listen() {
   on(query(col("punishments"), where("active", "==", true)), (s) => (S.pun = list(s)));
   on(query(col("bounties"), where("active", "==", true)), (s) => (S.bounties = list(s)));
   on(query(col("orders"), where("uid", "==", S.uid)), (s) => (S.myOrders = list(s).sort(byTime).reverse()));
+  on(query(col("support_tickets"), where("uid", "==", S.uid)), (s) => (S.mySupport = list(s).sort(byTime).reverse()));
   on(doc(db, "events", "state"), (d) => (S.state = d.data() ?? null));
   on(doc(db, "events", "vote"), (d) => (S.vote = d.data() ?? null));
   on(col("events/vote/ballots"), (s) => (S.ballots = list(s)));
   if (isStaff()) {
     on(doc(db, "settings", "config"), (d) => (S.cfg = d.data() ?? {}));
     on(query(col("reports"), orderBy("createdAt", "desc"), limit(40)), (s) => (S.reports = list(s)));
+    on(query(col("support_tickets"), orderBy("createdAt", "desc"), limit(60)), (s) => (S.support = list(s)));
     on(query(col("orders"), orderBy("createdAt", "desc"), limit(80)), (s) => {
       const before = S.orders.filter((o) => o.status === "open").length;
       S.orders = list(s);
@@ -251,18 +283,46 @@ const H = {
     });
   },
   async buy(r) {
+    return H.cart({ ...r, payload: { items: [{ itemId: r.payload.itemId, qty: r.payload.qty || 1 }], delivery: r.payload.delivery || "player", coords: r.payload.coords || "" } });
+  },
+  async cart(r) {
+    const rows = (r.payload.items || []).map(x => ({ itemId: String(x.itemId), qty: Math.max(1, Math.min(99, Math.floor(+x.qty || 1))) })).slice(0,40);
+    if (!rows.length) throw Error("Warenkorb ist leer");
     const oref = doc(collection(db, "orders"));
     const msg = await runTransaction(db, async (t) => {
-      const [us, it] = [await t.get(U(r.uid)), await t.get(doc(db, "shop_items", String(r.payload.itemId)))];
-      if (!it.exists() || !it.data().active) throw Error("Artikel nicht verfügbar");
-      const b = us.data().balance, p = it.data().price; if (b < p) throw Error("Nicht genug Coins");
-      const st = it.data().stock; if (st != null) { if (st <= 0) throw Error("Ausverkauft"); t.update(it.ref, { stock: st - 1 }); }
-      const g = us.data().gamertag;
-      t.update(U(r.uid), { balance: b - p }); addTx(t, r.uid, -p, `Shop: ${it.data().name}`, "shop", b - p);
-      t.set(oref, { kind: "shop", title: `Kauf: ${it.data().name}`, gamertag: g, uid: r.uid, commands: (it.data().commands ?? []).map((c) => c.replaceAll("{player}", q(g))), note: "", status: "open", createdAt: serverTimestamp() });
-      return `${it.data().name} gekauft`;
+      const us = await t.get(U(r.uid));
+      const refs = rows.map(x => doc(db, "shop_items", x.itemId));
+      const snaps = []; for (const ref of refs) snaps.push(await t.get(ref));
+      let total = 0; const bought = [];
+      for (let n=0;n<rows.length;n++) {
+        const s=snaps[n], row=rows[n]; if(!s.exists() || !s.data().active) throw Error("Artikel nicht verfügbar");
+        const d=s.data(), pack=Math.max(1,Math.floor(+d.packSize||1)), blocks=pack*row.qty, price=(+d.price||0)*row.qty;
+        if(d.stock!=null && d.stock<blocks) throw Error(d.name+": nicht genug Bestand");
+        total+=price; bought.push({ref:s.ref,d,row,pack,blocks,price});
+      }
+      const bal=+us.data().balance||0; if(bal<total) throw Error("Nicht genug Coins");
+      bought.forEach(x=>{ if(x.d.stock!=null) t.update(x.ref,{stock:x.d.stock-x.blocks}); });
+      const g=us.data().gamertag; t.update(U(r.uid),{balance:bal-total}); addTx(t,r.uid,-total,"Shop-Warenkorb","shop",bal-total);
+      const commands=[]; let note="";
+      if(r.payload.delivery==="chest"){
+        const m=String(r.payload.coords||"").trim().match(/^(-?\d+)\s+(-?\d+)\s+(-?\d+)$/); if(!m) throw Error("Kisten-Koordinaten als x y z angeben");
+        const x=+m[1],y=+m[2],z=+m[3]; let chest=0,slot=0;
+        commands.push(`/setblock ${x} ${y} ${z} chest`);
+        for(const xit of bought){
+          const id=String(xit.d.minecraftId||"").replace(/^minecraft:/,"");
+          if(!id){ (xit.d.commands||[]).forEach(cmd=>commands.push(cmd.replaceAll("{player}",q(g)).replaceAll("{amount}",String(xit.blocks)))); continue; }
+          let left=xit.blocks;
+          while(left>0){ if(slot>=27){chest++;slot=0;commands.push(`/setblock ${x+chest} ${y} ${z} chest`);} const n=Math.min(64,left); commands.push(`/replaceitem block ${x+chest} ${y} ${z} slot.container ${slot} ${id} ${n}`); slot++;left-=n; }
+        }
+        note=`Kistenlieferung ab ${x} ${y} ${z} · ${chest+1} Kiste(n)`;
+      } else {
+        for(const xit of bought){ const id=String(xit.d.minecraftId||"").replace(/^minecraft:/,""); if(id) commands.push(`/give ${q(g)} ${id} ${xit.blocks}`); else (xit.d.commands||[]).forEach(cmd=>{for(let k=0;k<xit.row.qty;k++)commands.push(cmd.replaceAll("{player}",q(g)).replaceAll("{amount}",String(xit.pack)));}); }
+      }
+      const title="Shop: "+bought.map(x=>x.row.qty+"× "+x.d.name).join(", ");
+      t.set(oref,{kind:"shop",title,gamertag:g,uid:r.uid,commands,note,total,status:"open",createdAt:serverTimestamp()});
+      return `Bestellung für ${total} Coins aufgegeben`;
     });
-    return { msg, orderId: oref.id };
+    return {msg,orderId:oref.id};
   },
   async kill(r) {
     if (!["mod", "admin"].includes(r.role)) throw Error("Keine Berechtigung");
@@ -365,10 +425,20 @@ const V = {
       <div class="card"><h3>Aktive Kopfgelder</h3>${top.length ? `<table><tbody>${top.map(([n, a]) => `<tr><td>${esc(n)}</td><td class="pos">${fmt(a)} Coins</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Niemand ist ausgeschrieben.</p>`}</div></div>`;
   },
   shop() {
-    const items = S.shop.filter((i) => i.active).sort((a, b) => a.price - b.price);
-    return `<div class="topline"><h2>Shop</h2><span class="pill">🪙 ${fmt(S.me.balance)}</span></div>
-      ${items.length ? `<div class="shop">${items.map((i) => `<div class="item card"><div class="cat">${esc(i.category || "Item")}</div><b>${esc(i.name)}</b><span class="price">🪙 ${fmt(i.price)}</span><span class="lbl">${i.stock == null ? "" : i.stock > 0 ? `Noch ${i.stock} verfügbar` : "Ausverkauft"}</span><button class="go" data-act="buy" data-id="${esc(i.id)}" ${i.stock === 0 ? "disabled" : ""}>${i.stock === 0 ? "Ausverkauft" : "Kaufen"}</button></div>`).join("")}</div>` : `<div class="card empty">Der Shop ist noch leer.</div>`}
-      <div class="card"><h3>Meine Aufträge</h3>${S.myOrders.length ? `<table><tbody>${S.myOrders.slice(0, 15).map((o) => `<tr><td>${esc(o.title)}</td><td>${o.status === "done" ? '<span class="tag g">✓ ausgeführt</span>' : '<span class="tag y">in Bearbeitung</span>'}</td><td class="lbl">${date(o.createdAt)}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">Noch nichts gekauft.</p>`}</div>`;
+    const all=S.shop.filter(i=>i.active), cats=["Alle",...new Set(all.map(i=>i.category||"Sonstiges"))];
+    const ql=S.shopQ.trim().toLowerCase(), items=all.filter(i=>(S.shopCat==="Alle"||(i.category||"Sonstiges")===S.shopCat)&&(!ql||i.name.toLowerCase().includes(ql)||String(i.minecraftId||"").includes(ql))).sort((a,b)=>a.price-b.price);
+    const cartRows=Object.entries(S.cart).map(([id,qty])=>({it:S.shop.find(x=>x.id===id),qty})).filter(x=>x.it&&x.qty>0);
+    const total=cartRows.reduce((n,x)=>n+(+x.it.price||0)*x.qty,0), blocks=cartRows.reduce((n,x)=>n+(+x.it.packSize||1)*x.qty,0);
+    return `<div class="os-hero"><h2>Realm Markt</h2><p>Baublöcke in 16er-Packs · Menge wählen · direkt oder in Kisten liefern.</p></div>
+      <div class="marketbar"><input id="shopSearch" placeholder="Im Sortiment suchen …" value="${esc(S.shopQ)}"><span class="pill">🪙 ${fmt(S.me.balance)}</span></div>
+      <div class="cats">${cats.map(x=>`<button class="${S.shopCat===x?"on":""}" data-act="shopCat" data-cat="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+      ${items.length?`<div class="shop">${items.map(i=>{const pack=Math.max(1,+i.packSize||1), max=i.stock==null?99:Math.floor(i.stock/pack), qty=S.cart[i.id]||0, icon=i.icon||({Holz:"🪵",Stein:"🪨",Nether:"🔥",End:"🌌",Glas:"🪟",Natur:"🌿",Farben:"🎨",Redstone:"⚙️"}[i.category]||"🧱");return `<div class="item card"><div class="prodicon">${esc(icon)}</div><div class="pbody"><div class="cat">${esc(i.category||"Block")}</div><b>${esc(i.name)}</b><span class="price">🪙 ${fmt(i.price)} <small>/ ${pack} Block${pack===1?"":"e"}</small></span><span class="lbl">${i.stock==null?"Unbegrenzt":fmt(i.stock)+" Blöcke auf Lager"}</span><div class="qty"><button data-act="cartMinus" data-id="${esc(i.id)}">−</button><b>${qty} Pack${qty===1?"":"s"}</b><button data-act="cartPlus" data-id="${esc(i.id)}" ${qty>=max?"disabled":""}>+</button></div></div></div>`;}).join("")}</div>`:`<div class="card empty">Keine Artikel gefunden.</div>`}
+      <form class="card cartbox" data-form="cartCheckout"><div class="topline"><h3>🛒 Warenkorb</h3><b>${fmt(total)} Coins</b></div>
+        ${cartRows.length?cartRows.map(x=>`<div class="cartline"><span>${esc(x.it.name)}</span><span>${x.qty} × ${x.it.packSize||1}</span><b>${fmt((+x.it.price||0)*x.qty)} 🪙</b></div>`).join("")+`<p class="lbl">${fmt(blocks)} Blöcke insgesamt</p>`:'<p class="empty">Noch keine Artikel ausgewählt.</p>'}
+        <label>Lieferung</label><select name="delivery" id="deliveryMode"><option value="player">Direkt ins Inventar</option><option value="chest">In Kiste liefern</option></select>
+        <label>Kisten-Koordinaten (nur bei Kistenlieferung)</label><input name="coords" placeholder="z. B. 125 68 -340">
+        <p class="row"><button class="go" ${cartRows.length?"":"disabled"}>Bestellung aufgeben</button><button type="button" data-act="cartClear">Warenkorb leeren</button></p></form>
+      <div class="card"><h3>Meine Bestellungen</h3>${S.myOrders.length?`<table><tbody>${S.myOrders.slice(0,15).map(o=>`<tr><td>${esc(o.title)}</td><td>${o.status==="done"?'<span class="tag g">✓ geliefert</span>':'<span class="tag y">in Bearbeitung</span>'}</td><td class="lbl">${date(o.createdAt)}</td></tr>`).join("")}</tbody></table>`:'<p class="empty">Noch nichts bestellt.</p>'}</div>`;
   },
   vote() {
     const v = S.vote; if (!v?.open) return `<div class="card"><h3>Minigame-Abstimmung</h3><p class="empty">Gerade läuft keine Abstimmung.</p></div>`;
@@ -381,6 +451,17 @@ const V = {
       <label for="rr">Grund</label><select id="rr" name="reason"><option>Cheating / Hacks</option><option>Beleidigung</option><option>Griefing</option><option>Teaming / Regelbruch</option><option>Sonstiges</option></select>
       <label for="rx">Beschreibung</label><textarea id="rx" name="text" maxlength="500" required></textarea><p><button class="go">Abschicken</button></p></form>`;
   },
+  support() {
+    const mine=S.mySupport;
+    return `<div class="os-hero"><h2>Support</h2><p>Hilfe, Spieler melden oder einen Supporter direkt rufen.</p></div>
+      <div class="cols"><form class="card support-call" data-form="supportCall"><h3>🛟 Supporter rufen</h3><p>Erstellt einen dringenden Support-Ruf für das Team.</p><label>Grund</label><select name="reason"><option>Ich brauche Hilfe</option><option>Problem mit einem Spieler</option><option>Problem mit Shop/Lieferung</option><option>Technisches Problem</option><option>Sonstiges</option></select><label>Beschreibung</label><textarea name="text" maxlength="500" required></textarea><p><button class="go">Supporter rufen</button></p></form>
+      <form class="card" data-form="report"><h3>🚩 Spieler melden</h3><label>Spieler</label><select name="target">${userOpts("",true)}</select><label>Grund</label><select name="reason"><option>Cheating / Hacks</option><option>Beleidigung</option><option>Griefing</option><option>Teaming / Regelbruch</option><option>Sonstiges</option></select><label>Beschreibung</label><textarea name="text" maxlength="500" required></textarea><p><button>Absenden</button></p></form></div>
+      <div class="card"><h3>Meine Support-Anfragen</h3>${mine.length?mine.map(t=>`<div class="order"><div class="oh"><b>${esc(t.reason||"Support")}</b><span class="tag ${t.status==="done"?"g":"y"}">${t.status==="done"?"erledigt":t.status==="claimed"?"übernommen":"offen"}</span></div><div class="lbl">${esc(t.text||"")} · ${date(t.createdAt)}</div>${t.claimedBy?`<small>Supporter: ${esc(t.claimedBy)}</small>`:""}</div>`).join(""):'<p class="empty">Keine Support-Anfragen.</p>'}</div>`;
+  },
+  settings() {
+    return `<div class="os-hero"><h2>Einstellungen</h2><p>Realm-Control-Konto und Systemeinstellungen.</p></div><div class="cols"><div class="card"><h3>Mein Konto</h3><p><b>${esc(S.me.gamertag)}</b><br><span class="lbl">Rolle: ${esc(S.me.role)} · Kontostand: ${fmt(S.me.balance)} Coins</span></p><button data-act="logout">Abmelden</button></div>
+      ${isAdmin()?`<form class="card" data-form="cfg"><h3>Realm-Einstellungen</h3><label>Knast-Position</label><input name="jail" value="${esc(C().jail)}"><label>Spawn</label><input name="spawn" value="${esc(C().spawn)}"><label>Minigame</label><input name="minigame" value="${esc(C().minigame)}"><label>Startguthaben</label><input name="startCoins" type="number" value="${C().startCoins}"><label>Kill-Belohnung</label><input name="killReward" type="number" value="${C().killReward}"><label>Standard-Kopfgeld</label><input name="bountyOnKill" type="number" value="${C().bountyOnKill}"><p><button class="go">Speichern</button></p></form>`:""}</div>`;
+  },
   punish() {
     const L = { warn: ["Verwarnung", "y"], jail: ["Knast", "r"], ban: ["Bann", "r"] };
     const rows = [...S.pun].sort(byTime).reverse();
@@ -390,7 +471,7 @@ const V = {
   /* ---------- Schnellansicht ---------- */
   quick() {
     const open = S.orders.filter((o) => o.status === "open").sort(byTime);
-    return `<div class="qgrid"><section><h3>Offene Aufträge (${open.length})</h3>${open.map(orderCard).join("") || '<div class="card empty">Keine offenen Aufträge. Neue erscheinen hier automatisch.</div>'}</section>
+    const sup=S.support.filter(t=>t.status!=="done").sort(byTime); return `<div class="qgrid"><section><h3>Support-Eingang (${sup.length})</h3>${sup.map(t=>`<div class="order"><div class="oh"><b>🛟 ${esc(t.gamertag)} · ${esc(t.reason)}</b><span class="tag ${t.status==="claimed"?"y":"r"}">${t.status==="claimed"?"übernommen":"OFFEN"}</span></div><p>${esc(t.text||"")}</p><div class="row">${t.status==="open"?`<button class="sm go" data-act="supportClaim" data-id="${t.id}">Übernehmen</button>`:""}<button class="sm" data-act="supportDone" data-id="${t.id}">Erledigt</button></div></div>`).join("")||'<div class="card empty">Keine offenen Support-Rufe.</div>'}<h3>Offene Aufträge (${open.length})</h3>${open.map(orderCard).join("") || '<div class="card empty">Keine offenen Aufträge.</div>'}</section>
       <aside>${pendingBox()}
         <form class="card compact" data-form="death"><h3>☠ Tod melden</h3>
           <div class="drow"><select name="victim" aria-label="Gestorben" required><option value="" disabled ${S.victim ? "" : "selected"}>Gestorben …</option>${userOpts(S.victim)}</select><span>→</span><select name="killer" aria-label="Getötet von"><option value="">Getötet von … (Umwelt)</option>${userOpts()}</select></div>
@@ -437,21 +518,21 @@ function render(force) {
   if (!force && ae && ["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName)) { dirty = true; return; }
   dirty = false;
   const open = S.orders.filter((o) => o.status === "open").length;
-  document.title = (open ? `(${open}) ` : "") + "Realm Control";
+  document.title = (open ? `(${open}) ` : "") + "RealmOS";
   if (!S.uid) return loginView();
-  if (!S.me) return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>Konto wird geladen …</p></div>`);
-  if (S.me.status !== "active") return ($("#root").innerHTML = `<div class="login card"><h1>Realm Control</h1><p>${S.me.status === "rejected" ? "Deine Anmeldung wurde abgelehnt." : `Hallo <b>${esc(S.me.gamertag)}</b>! Dein Konto wartet auf Freischaltung durch einen Admin.`}</p><p><button data-act="logout">Abmelden</button></p></div>`);
+  if (!S.me) return ($("#root").innerHTML = `<div class="login card"><h1>RealmOS</h1><p>Konto wird geladen …</p></div>`);
+  if (S.me.status !== "active") return ($("#root").innerHTML = `<div class="login card"><h1>RealmOS</h1><p>${S.me.status === "rejected" ? "Deine Anmeldung wurde abgelehnt." : `Hallo <b>${esc(S.me.gamertag)}</b>! Dein Konto wartet auf Freischaltung durch einen Admin.`}</p><p><button data-act="logout">Abmelden</button></p></div>`);
   const nb = (k, l) => { const [ic, ...t] = l.split(" "); return `<button data-act="nav" data-v="${k}" class="${S.view === k ? "on" : ""}"><span class="ic">${ic}</span><span>${t.join(" ")}</span></button>`; };
   const TITLES = { quick: "Schnellansicht", full: "Vollansicht", bounty: "Kopfgelder", vote: "Abstimmung", report: "Spieler melden", punish: "Strafen" };
   const nav = (isStaff() ? `<div class="grp">Admin</div>${nb("quick", "⚡ Schnellansicht")}${nb("full", "🧰 Vollansicht")}` : "") +
-    `<div class="grp">Konto</div>${nb("wallet", "💳 Wallet")}${nb("shop", "🛒 Shop")}<div class="grp">Event</div>${nb("bounty", "🎯 Kopfgelder")}${nb("vote", "🗳 Abstimmung")}<div class="grp">Regeln</div>${nb("report", "🚩 Melden")}${nb("punish", "⚖ Strafen")}<div class="grp"></div><button data-act="logout">Abmelden</button>`;
+    `<div class="grp">Apps</div>${nb("wallet", "💳 Konto")}${nb("shop", "🛒 Shop")}${nb("support", "🛟 Support")}${nb("bounty", "🎯 Bounty")}${nb("vote", "🗳 Vote")}${nb("punish", "⚖ Strafen")}${nb("settings", "⚙️ Einstellungen")}<div class="grp"></div><button data-act="logout"><span class="ic">↪</span><span>Logout</span></button>`;
   const v = ["quick", "full"].includes(S.view) && !isStaff() ? "wallet" : V[S.view] ? S.view : "wallet";
-  $("#root").innerHTML = `<div id="app"><header class="topbar"><span class="brand">⛏ Realm Control</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${TITLES[v] ? `<h2 class="ptitle">${TITLES[v]}</h2>` : ""}${V[v]()}</main></div>`;
+  $("#root").innerHTML = `<div id="app"><header class="topbar"><span class="brand">⛏ RealmOS</span><span class="timer" id="timer"></span><span><b>${esc(S.me.gamertag)}</b> <span class="tag">${esc(S.me.role)}</span></span></header><nav>${nav}</nav><main>${TITLES[v] ? `<h2 class="ptitle">${TITLES[v]}</h2>` : ""}${V[v]()}</main></div>`;
   tick();
 }
 function loginView() {
   const reg = S.mode === "register";
-  $("#root").innerHTML = `<form class="login card" data-form="auth"><h1>Realm Control</h1><div class="row"><button type="button" class="${reg ? "" : "go"}" data-act="mode" data-m="login">Anmelden</button><button type="button" class="${reg ? "go" : ""}" data-act="mode" data-m="register">Registrieren</button></div>
+  $("#root").innerHTML = `<form class="login card" data-form="auth"><h1>RealmOS</h1><div class="row"><button type="button" class="${reg ? "" : "go"}" data-act="mode" data-m="login">Anmelden</button><button type="button" class="${reg ? "go" : ""}" data-act="mode" data-m="register">Registrieren</button></div>
     <label for="gt">Gamertag</label><input id="gt" name="gamertag" autocomplete="username" required><label for="pw">Passwort (mind. 6 Zeichen)</label><input id="pw" name="password" type="password" minlength="6" autocomplete="${reg ? "new-password" : "current-password"}" required>
     <p><button class="go">${reg ? "Konto erstellen" : "Anmelden"}</button></p><p class="neg">${esc(S.authMsg)}</p>${reg ? '<p class="lbl">Nach der Registrierung schaltet ein Admin dein Konto frei.</p>' : ""}</form>`;
 }
@@ -480,6 +561,13 @@ const ACT = {
   approve: (b) => approve(b.dataset.id).then(() => toast("Freigeschaltet", "ok")),
   reject: (b) => updateDoc(U(b.dataset.id), { status: "rejected" }),
   buy: (b) => buyItem(b.dataset.id),
+  shopCat: (b) => { S.shopCat=b.dataset.cat; render(true); },
+  cartPlus: (b) => { const it=S.shop.find(x=>x.id===b.dataset.id); if(!it)return; const p=Math.max(1,+it.packSize||1), max=it.stock==null?99:Math.floor(it.stock/p); S.cart[b.dataset.id]=Math.min(max,(S.cart[b.dataset.id]||0)+1); render(true); },
+  cartMinus: (b) => { S.cart[b.dataset.id]=Math.max(0,(S.cart[b.dataset.id]||0)-1); if(!S.cart[b.dataset.id])delete S.cart[b.dataset.id]; render(true); },
+  cartClear: () => { S.cart={}; render(true); },
+  supportClaim: (b) => updateDoc(doc(db,"support_tickets",b.dataset.id),{status:"claimed",claimedBy:S.me.gamertag,claimedByUid:S.uid,claimedAt:serverTimestamp()}),
+  supportDone: (b) => updateDoc(doc(db,"support_tickets",b.dataset.id),{status:"done",doneBy:S.me.gamertag,doneAt:serverTimestamp()}),
+  shopEdit: async (b) => { const it=S.shop.find(x=>x.id===b.dataset.id); if(!it)return; const name=prompt("Name",it.name); if(!name)return; const price=Number(prompt("Preis pro Pack",it.price)); const stock=prompt("Bestand in einzelnen Blöcken (leer = unbegrenzt)",it.stock??""); const packSize=Number(prompt("Packgröße",it.packSize||1)); const minecraftId=prompt("Minecraft-ID",it.minecraftId||"")||""; const icon=prompt("Icon/Emoji",it.icon||"🧱")||"🧱"; await updateDoc(doc(db,"shop_items",it.id),{name:name.trim(),price:Math.max(0,price||0),stock:stock===""?null:Math.max(0,Math.floor(+stock||0)),packSize:Math.max(1,Math.floor(packSize||1)),minecraftId:minecraftId.trim(),icon}); toast("Artikel aktualisiert","ok"); },
   fullTab: (b) => { S.fullTab = b.dataset.t; render(true); },
   walTab: (b) => { S.walTab = b.dataset.t; render(true); },
   sendFrom: (b) => { S.sendFrom = b.dataset.f; render(true); },
@@ -521,6 +609,8 @@ const FORM = {
   transfer: (f) => req("transfer", { from: f.from.value, to: f.to.value, amount: +f.amount.value }),
   bounty: (f) => req("bounty", { target: f.target.value, amount: +f.amount.value }),
   async report(f) { await addDoc(collection(db, "reports"), { uid: S.uid, reporterName: S.me.gamertag, target: f.target.value, targetName: uname(f.target.value), reason: f.reason.value, text: f.text.value.trim(), status: "open", createdAt: serverTimestamp() }); toast("Meldung gesendet", "ok"); },
+  async supportCall(f) { await addDoc(collection(db,"support_tickets"),{uid:S.uid,gamertag:S.me.gamertag,reason:f.reason.value,text:f.text.value.trim(),type:"call",status:"open",createdAt:serverTimestamp()}); toast("Supporter wurde gerufen","ok"); },
+  async cartCheckout(f) { const items=Object.entries(S.cart).filter(([,qty])=>qty>0).map(([itemId,qty])=>({itemId,qty})); if(!items.length)throw Error("Warenkorb ist leer"); if(f.delivery.value==="chest") xyz(f.coords.value); await req("cart",{items,delivery:f.delivery.value,coords:f.coords.value.trim()}); S.cart={}; render(true); },
   death: (f) => { S.victim = ""; return req("kill", { victim: f.victim.value, killer: f.killer.value || null, bountyAmount: f.killer.value && f.bo.checked ? Math.max(0, Math.floor(+f.ba.value || 0)) : 0 }); },
   broadcast: (f) => order("Broadcast", [...(f.sub.value.trim() ? [`/title @a subtitle ${clean(f.sub.value)}`] : []), `/title @a title ${clean(f.title.value)}`]),
   clear: (f) => order(`Item entfernen: ${uname(f.uid.value)}`, [`/clear ${q(uname(f.uid.value))} ${f.item.value.trim()}`]),
@@ -532,7 +622,7 @@ const FORM = {
     const ref = await addDoc(collection(db, "teams"), { name: f.name.value.trim(), members: [f.a.value, f.b.value], vault: 0 });
     await updateDoc(U(f.a.value), { teamId: ref.id }); await updateDoc(U(f.b.value), { teamId: ref.id }); toast("Team erstellt", "ok");
   },
-  async shopItem(f) { await setDoc(doc(db, "shop_items", slug(f.name.value)), { name: f.name.value.trim(), price: +f.price.value, category: f.category.value.trim(), stock: f.stock.value === "" ? null : Math.max(0, Math.floor(+f.stock.value)), commands: f.commands.value.split("\n").map((s) => s.trim()).filter(Boolean), active: true }); toast("Artikel gespeichert", "ok"); },
+  async shopItem(f) { await setDoc(doc(db, "shop_items", slug(f.name.value)), { name: f.name.value.trim(), price: +f.price.value, category: f.category.value.trim(), stock: f.stock.value === "" ? null : Math.max(0, Math.floor(+f.stock.value)), packSize: Math.max(1,Math.floor(+(f.packSize?.value||1))), minecraftId:(f.minecraftId?.value||"").trim(), icon:(f.icon?.value||"🧱").trim(), commands: f.commands.value.split("\n").map((s) => s.trim()).filter(Boolean), active: true }); toast("Artikel gespeichert", "ok"); },
   async cfg(f) { await setDoc(doc(db, "settings", "config"), { jail: xyz(f.jail.value), spawn: xyz(f.spawn.value), minigame: xyz(f.minigame.value), startCoins: +f.startCoins.value, killReward: +f.killReward.value, bountyOnKill: +f.bountyOnKill.value }); toast("Gespeichert", "ok"); },
 };
 document.addEventListener("submit", async (e) => {
@@ -585,7 +675,7 @@ function renderModal() {
   m.innerHTML = `<div class="overlay"><div class="card sheet" role="dialog" aria-live="polite">${body}</div></div>`;
 }
 setInterval(() => { if (S.pop?.phase === "wait") renderModal(); }, 1000);
-document.addEventListener("input", (e) => { if (e.target.id === "pq") { S.q = e.target.value; $("#plist").innerHTML = playerList(); } });
+document.addEventListener("input", (e) => { if (e.target.id === "pq") { S.q = e.target.value; $("#plist").innerHTML = playerList(); } if(e.target.id==="shopSearch"){ S.shopQ=e.target.value; clearTimeout(window.__sq); window.__sq=setTimeout(()=>render(true),180); } });
 
 
 render(true);
